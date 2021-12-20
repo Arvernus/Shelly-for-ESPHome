@@ -1,6 +1,6 @@
 # About
 
-Add some information about your project here.
+This Project tries to make firmware's for Shelly devise available that can be flashed to a Shelly easily and mak it show up in the ESPHome Dashboard.
 
 # Installation
 
