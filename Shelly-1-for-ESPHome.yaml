@@ -33,7 +33,7 @@ dashboard_import:
 wifi:
   # Set up a wifi access point
   ap:
-    password: "Shelly"
+    password: "12345678"
 
 # In combination with the `ap` this allows the user
 # to provision wifi credentials to the device.
