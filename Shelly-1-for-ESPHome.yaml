@@ -66,12 +66,12 @@ binary_sensor:
           lambda: |-
             return !${is_button};
         then:
-          light.toggle: shelly_light
+          switch.toggle: shelly_relay
     on_click:
       if:
         condition:
           lambda: |-
             return ${is_button};
         then:
-          light.toggle: shelly_light
+          switch.toggle: shelly_relay
     id: button
