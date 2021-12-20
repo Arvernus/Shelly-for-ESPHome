@@ -4,6 +4,8 @@ substitutions:
   is_button: "false"
 
 esphome:
+  platform: ESP8266
+  board: esp01_1m
   name: ${devicename}
   # Automatically add the mac address to the name
   # so you can use a single firmware for all devices
@@ -14,10 +16,6 @@ esphome:
   project:
     name: Arvernus.Shelly-1
     version: "1.0"
-
-esp32:
-  platform: ESP8266
-  board: esp01_1m
 
 # To be able to get logs from the device via serial and api.
 logger:
