@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    uses: jowgn/workflows/publish.yml@patch-1
+    uses: jowgn/workflows/.github/workflows/publish.yml@patch-1
     with:
       # CHANGEME: Set the filenames of your config files here:
       files: Shelly-1-for-ESPHome.yaml
