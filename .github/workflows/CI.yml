@@ -15,8 +15,8 @@ jobs:
         run: |
           files=$(ls -m *-for-ESPHome.yaml)
           devices=${files//-for-ESPHome.yaml/}
-          json=$(echo $devices | jq -Rcn 'inputs | . / ","')
-          echo ::set-output name=list::$json
+          json=$(echo $devices | jq -Rcn 'inputs | . / ", "')
+          echo ::set-output name=list::$(echo $json)
 
   build_esphome_firmware:
     name: Build ESPHome binary for ${{ matrix.file }}
