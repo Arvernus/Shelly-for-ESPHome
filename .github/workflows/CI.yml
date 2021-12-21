@@ -12,8 +12,8 @@ jobs:
       - id: listdevices
         run: |
           files=$(ls -m *-for-ESPHome.yaml)
-          devices=${files//-for-ESPHome.yaml/}
-          json=$(echo "$devices" | jq -Rcn 'inputs | . / ", "')
+          devicelist=${files//-for-ESPHome.yaml/}
+          json=$(echo "$devicelist" | jq -Rcn 'inputs | . / ", "')
           echo $json
           echo ::set-output name=json::$json
     outputs:
