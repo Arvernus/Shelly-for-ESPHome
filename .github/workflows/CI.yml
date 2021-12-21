@@ -19,13 +19,19 @@ jobs:
           echo $json
           echo ::set-output name=list::$json
 
+  debug:
+    needs: [setup]
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ${{ fromJson(needs.setup.outputs.devices) }}
+
   build_esphome_firmware:
     name: Build ESPHome binary for ${{ matrix.device }}
     needs: [setup]
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        device: ${{ fromJson("["Shelly-1-PM","Shelly-1"]") }}
+        device: ${{ fromJson(needs.setup.outputs.devices) }}
     outputs:
       esphome-version: ${{ steps.esphome-build.outputs.esphome-version }}
     steps:
