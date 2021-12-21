@@ -17,7 +17,7 @@ jobs:
           echo $json
           echo ::set-output name=json::$json
     outputs:
-      devices: ${{ fromJson(steps.listdevices.json) }}
+      devices: ${{ steps.listdevices.json }}
 
   build_esphome_firmware:
     name: Build ESPHome binary for ${{ matrix.device }}
@@ -33,7 +33,7 @@ jobs:
       - uses: esphome/build-action@v1.1.0
         id: esphome-build
         with:
-          yaml_file: ${{ matrix.device }}-for-ESPHome.yaml
+          yaml_file: ${{ fromJson(${{ matrix.device }}-for-ESPHome.yaml)}}
       - uses: actions/upload-artifact@v2.3.0
         with:
           name: esphome_firmware/${{ steps.esphome-build.outputs.name }}
