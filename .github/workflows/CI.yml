@@ -15,4 +15,23 @@ jobs:
         run: |
           devices=$(ls -m *-for-ESPHome.yaml)
           echo ::set-output name=list::$devices
-          echo ::debug::"$devices will be proceced"
+          
+  build_esphome_firmware:
+    name: Build ESPHome binary for ${{ matrix.file }}
+    needs: [prepare]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        device: ${{ fromJson(needs.prepare.outputs.devices) }}
+    outputs:
+      esphome-version: ${{ steps.esphome-build.outputs.esphome-version }}
+    steps:
+      - uses: actions/checkout@v2.4.0
+      - uses: esphome/build-action@v1.1.0
+        id: esphome-build
+        with:
+          yaml_file: ${{ matrix.device }}-for-ESPHome.yaml
+      - uses: actions/upload-artifact@v2.3.0
+        with:
+          name: esphome_firmware/${{ steps.esphome-build.outputs.name }}
+          path: ${{ steps.esphome-build.outputs.name }}
