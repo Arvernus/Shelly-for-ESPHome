@@ -36,7 +36,7 @@ jobs:
 
   build_mirgration_firmware:
     name: Build Migration Firmware for ${{ matrix.file }}
-    needs: [prepare, build_esphome]
+    needs: [prepare, build_esphome_firmware]
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -57,7 +57,7 @@ jobs:
   publish:
     name: Publish new firmware and website to GitHub Pages
     runs-on: ubuntu-latest
-    needs: [build]
+    needs: [build_mirgration_firmware]
     steps:
       - uses: actions/checkout@v2.4.0
       - uses: actions/download-artifact@v2.1.0
