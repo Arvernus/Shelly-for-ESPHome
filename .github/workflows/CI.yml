@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        device: ${{ fromJson(needs.setup.outputs.devices) }}
+        device: ${{ fromJson(["Shelly-1-PM","Shelly-1"]) }}
     outputs:
       esphome-version: ${{ steps.esphome-build.outputs.esphome-version }}
     steps:
