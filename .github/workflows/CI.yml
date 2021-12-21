@@ -20,12 +20,6 @@ jobs:
           echo $json
           echo ::set-output name=json::$json
 
-  debug:
-    needs: [setup]
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo ${{ fromJson(needs.setup.outputs.devices) }}
-
   build_esphome_firmware:
     name: Build ESPHome binary for ${{ matrix.device }}
     needs: [setup]
