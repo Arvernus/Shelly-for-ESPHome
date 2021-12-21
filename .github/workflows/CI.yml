@@ -13,9 +13,9 @@ jobs:
       - name: Define List of devices
         id: devices
         run: |
-          devices=$(ls -m *-for-ESPHome.yaml)
+          devices=$(ls -m *-for-ESPHome.yaml | jq -Rcn 'inputs | . / ","')
           echo ::set-output name=list::$devices
-          
+
   build_esphome_firmware:
     name: Build ESPHome binary for ${{ matrix.file }}
     needs: [prepare]
