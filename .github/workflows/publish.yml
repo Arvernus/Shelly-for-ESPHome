@@ -9,21 +9,20 @@ jobs:
   prepare:
     runs-on: ubuntu-latest
     outputs:
-      files: ${{ steps.files-array.outputs.files }}
+      devices: ${{ steps.files-array.devices.list }}
     steps:
-      - uses: actions/setup-python@v2.3.0
-      - id: files-array
+      - name: Define List of devices
+        id: devices
         run: |
-          files=$(echo "Shelly-1-for-ESPHome.yaml" | jq -Rcn 'inputs | . / ","')
-          echo ::set-output name=files::$files
+          echo ::set-output name=list::$(ls -m *-for-ESPHome.yaml)
 
-  build:
+  build_esphome_firmware:
     name: Build ESPHome binary for ${{ matrix.file }}
     needs: [prepare]
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        file: ${{ fromJson(needs.prepare.outputs.files) }}
+        device: ${{ fromJson(needs.prepare.outputs.devices) }}
     outputs:
       esphome-version: ${{ steps.esphome-build.outputs.esphome-version }}
     steps:
@@ -31,12 +30,32 @@ jobs:
       - uses: esphome/build-action@v1.1.0
         id: esphome-build
         with:
-          yaml_file: ${{ matrix.file }}
+          yaml_file: ${{ matrix.device }}-for-ESPHome.yaml
       - uses: actions/upload-artifact@v2.3.0
         with:
-          name: ${{ steps.esphome-build.outputs.name }}
+          name: esphome_firmware/${{ steps.esphome-build.outputs.name }}
           path: ${{ steps.esphome-build.outputs.name }}
 
+  build_mirgration_firmware:
+    name: Build Migration Firmware for ${{ matrix.file }}
+    needs: [prepare, build_esphome]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        device: ${{ fromJson(needs.prepare.outputs.devices) }}
+      steps: 
+        - uses: actions/checkout@v2.4.0
+        - uses: actions/download-artifact@v2.1.0
+          with:
+            name: esphome_firmware*
+            path: esphome_firmware
+        - name: Build firmware
+          uses: yaourdt/mongoose-os-action@v1.0.2
+          with:
+            mos-yml-path: mirgration_firmware
+            build-var: MODEL=${{ matrix.device }}
+          id: mos_build
+        
   publish:
     name: Publish new firmware and website to GitHub Pages
     runs-on: ubuntu-latest
