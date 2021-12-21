@@ -33,7 +33,7 @@ jobs:
       - uses: esphome/build-action@v1.1.0
         id: esphome-build
         with:
-          yaml_file: ${{ fromJson(join(matrix.device, '-for-ESPHome.yaml')}}
+          yaml_file: ${{ fromJson(join(matrix.device, '-for-ESPHome.yaml'))}}
       - uses: actions/upload-artifact@v2.3.0
         with:
           name: esphome_firmware/${{ steps.esphome-build.outputs.name }}
