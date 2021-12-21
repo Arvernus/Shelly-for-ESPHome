@@ -7,11 +7,11 @@ jobs:
   prepare:
     runs-on: ubuntu-latest
     outputs:
-      devices: ${{ steps.devices.list }}
+      devices: ${{ steps.listdevices.list }}
     steps:
       - uses: actions/checkout@v2.4.0
       - name: Define List of devices
-        id: devices
+        id: listdevices
         run: |
           files=$(ls -m *-for-ESPHome.yaml)
           devices=${files//-for-ESPHome.yaml/}
