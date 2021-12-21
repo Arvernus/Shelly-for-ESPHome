@@ -7,7 +7,7 @@ jobs:
   setup:
     runs-on: ubuntu-latest
     outputs:
-      devices: ${{ steps.listdevices.list }}
+      devices: ${{ steps.listdevices.json }}
     steps:
       - uses: actions/checkout@v2.4.0
       - name: Define List of devices
@@ -17,7 +17,7 @@ jobs:
           devices=${files//-for-ESPHome.yaml/}
           json=$(echo "$devices" | jq -Rcn 'inputs | . / ", "')
           echo $json
-          echo ::set-output name=list::$json
+          echo ::set-output name=json::$json
 
   debug:
     needs: [setup]
