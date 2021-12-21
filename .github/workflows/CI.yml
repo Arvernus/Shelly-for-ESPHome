@@ -13,7 +13,8 @@ jobs:
       - id: devices-array
         run: |
           files=$(ls -m *-for-ESPHome.yaml)
-          devices=$(echo "$files" | jq -Rcn 'inputs | . / ","')
+          fileslist=$(echo "$files" | jq -Rcn 'inputs | . / ","')
+          devices= ${fileslist/-for-ESPHome.yaml/}
           echo ::set-output name=devices::$devices
 
   build_esphome_firmware:
@@ -27,3 +28,4 @@ jobs:
       esphome-version: ${{ steps.esphome-build.outputs.esphome-version }}
     steps:
       - uses: actions/checkout@v2.4.0
+      - run: echo ${{ matrix.device }}
