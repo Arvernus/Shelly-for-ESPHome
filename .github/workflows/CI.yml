@@ -6,16 +6,16 @@ on:
 jobs:
   setup:
     runs-on: ubuntu-latest
+    outputs:
+      devices: ${{ steps.devices-array.outputs.devices }}
     steps:
       - uses: actions/checkout@v2.4.0
-      - id: listdevices
+      - uses: actions/setup-python@v2.3.0
+      - id: devices-array
         run: |
           files=$(ls -m *-for-ESPHome.yaml)
-          devicelist=[${files//-for-ESPHome.yaml/}]
-          echo $devicelist
-          echo "::set-output name=list::$devicelist"
-    outputs:
-      devices: ${{ steps.listdevices.list }}
+          devices=$(echo "$files" | jq -Rcn 'inputs | . / ","')
+          echo ::set-output name=devices::$devices
 
   build_esphome_firmware:
     name: Build ESPHome binary for ${{ matrix.device }}
