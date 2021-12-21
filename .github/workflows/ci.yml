@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        file:
+        paths:
           - Shelly*.yaml
     steps:
       - name: Checkout source code
