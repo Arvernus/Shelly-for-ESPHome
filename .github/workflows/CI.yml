@@ -8,7 +8,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2.4.0
-      - uses: actions/setup-python@v2.3.0
       - id: listdevices
         run: |
           files=$(ls -m *-for-ESPHome.yaml)
