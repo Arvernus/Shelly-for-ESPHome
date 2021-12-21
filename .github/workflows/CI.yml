@@ -11,8 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2.4.0
       - uses: actions/setup-python@v2.3.0
-      - name: Define List of devices
-        id: listdevices
+      - id: listdevices
         run: |
           files=$(ls -m *-for-ESPHome.yaml)
           devices=${files//-for-ESPHome.yaml/}
