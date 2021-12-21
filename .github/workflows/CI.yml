@@ -4,7 +4,7 @@ on:
   pull_request:
 
 jobs:
-  prepare:
+  setup:
     runs-on: ubuntu-latest
     outputs:
       devices: ${{ steps.listdevices.list }}
@@ -14,17 +14,20 @@ jobs:
         id: listdevices
         run: |
           files=$(ls -m *-for-ESPHome.yaml)
+          echo $files
           devices=${files//-for-ESPHome.yaml/}
-          json=$(echo $devices | jq -Rcn 'inputs | . / ", "')
-          echo ::set-output name=list::$(echo $json)
+          echo $devices
+          json=$(echo "$devices" | jq -Rcn 'inputs | . / ", "')
+          echo $json
+          echo ::set-output name=list::$json
 
   build_esphome_firmware:
-    name: Build ESPHome binary for ${{ matrix.file }}
-    needs: [prepare]
+    name: Build ESPHome binary for ${{ matrix.device }}
+    needs: [setup]
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        device: ${{ fromJson(needs.prepare.outputs.devices) }}
+        device: ${{ fromJson(needs.setup.outputs.devices) }}
     outputs:
       esphome-version: ${{ steps.esphome-build.outputs.esphome-version }}
     steps:
