@@ -27,4 +27,11 @@ jobs:
       esphome-version: ${{ steps.esphome-build.outputs.esphome-version }}
     steps:
       - uses: actions/checkout@v2.4.0
-      - run: echo ${{ matrix.device }}
+      - uses: esphome/build-action@v1.1.0
+        id: esphome-build
+        with:
+          yaml_file: ${{ matrix.device }}-for-ESPHome.yaml
+      - uses: actions/upload-artifact@v2.3.0
+        with:
+          name: esphome_firmware/${{ steps.esphome-build.outputs.name }}
+          path: ${{ steps.esphome-build.outputs.name }}
