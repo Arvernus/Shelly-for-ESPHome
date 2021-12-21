@@ -7,7 +7,7 @@ jobs:
   prepare:
     runs-on: ubuntu-latest
     outputs:
-      devices: ${{ steps.files-array.devices.list }}
+      devices: ${{ steps.devices.list }}
     steps:
       - name: Define List of devices
         id: devices
