@@ -12,4 +12,5 @@ jobs:
       - name: Define List of devices
         id: devices
         run: |
-          echo ::set-output name=list::$(ls -m *-for-ESPHome.yaml)
+          devices=$(ls -m *-for-ESPHome.yaml)
+          echo ::set-output name=list::$devices
