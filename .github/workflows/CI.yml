@@ -17,7 +17,7 @@ jobs:
           echo ::set-output name=devices::$fileslist
 
   build_esphome_firmware:
-    name: Build ESPHome binary for ${{ matrix.device.substitutions.devicename }}
+    name: Build ESPHome binary for ${{ matrix.device }}
     needs: [setup]
     runs-on: ubuntu-latest
     strategy:
@@ -27,4 +27,4 @@ jobs:
       esphome-version: ${{ steps.esphome-build.outputs.esphome-version }}
     steps:
       - uses: actions/checkout@v2.4.0
-      - run: echo ${{ device.substitutions.devicename }}
+      - run: echo ${{ device }}
