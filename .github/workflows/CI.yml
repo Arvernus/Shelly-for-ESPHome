@@ -13,9 +13,9 @@ jobs:
           files=$(ls -m *-for-ESPHome.yaml)
           devicelist=[${files//-for-ESPHome.yaml/}]
           echo $devicelist
-          echo ::set-output name=devicelist::$devicelist
+          echo "::set-output name=list::$devicelist"
     outputs:
-      devices: ${{ steps.listdevices.devicelist }}
+      devices: ${{ steps.listdevices.list }}
 
   build_esphome_firmware:
     name: Build ESPHome binary for ${{ matrix.device }}
@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        device: ${{ needs.setup.outputs.devices }}
+        device: ${{ fromJSON(needs.setup.outputs.devices) }}
     outputs:
       esphome-version: ${{ steps.esphome-build.outputs.esphome-version }}
     steps:
