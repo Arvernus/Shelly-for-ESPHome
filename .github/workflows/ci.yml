@@ -10,7 +10,7 @@ jobs:
     strategy:
       matrix:
         file:
-          - Shelly-1-for-ESPHome.yaml
+          - Shelly*.yaml
     steps:
       - name: Checkout source code
         uses: actions/checkout@v2
