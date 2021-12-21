@@ -9,6 +9,7 @@ jobs:
     outputs:
       devices: ${{ steps.devices.list }}
     steps:
+      - uses: actions/checkout@v2.4.0
       - name: Define List of devices
         id: devices
         run: |
