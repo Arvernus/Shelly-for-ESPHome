@@ -16,7 +16,7 @@ jobs:
           echo $json
           echo ::set-output name=json::$json
     outputs:
-      devices: ["Shelly-1-PM", "Shelly-1"]
+      devices: ${{ steps.listdevices.json }}
 
   build_esphome_firmware:
     name: Build ESPHome binary for ${{ matrix.device }}
