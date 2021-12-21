@@ -10,7 +10,6 @@ jobs:
       devices: ${{ steps.devices-array.outputs.devices }}
     steps:
       - uses: actions/checkout@v2.4.0
-      - uses: actions/setup-python@v2.3.0
       - id: devices-array
         run: |
           files=$(ls -m *-for-ESPHome.yaml)
