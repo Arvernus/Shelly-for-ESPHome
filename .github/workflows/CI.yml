@@ -54,6 +54,7 @@ jobs:
       - uses: actions/upload-artifact@v2.3.0
         with:
           name: ${{ matrix.device }}
+          path: .
           if-no-files-found: error
 
   build_migration_firmware:
