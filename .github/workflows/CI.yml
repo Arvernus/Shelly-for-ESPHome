@@ -53,8 +53,6 @@ jobs:
           platform: esp8266
           build-args: --build-var MODEL=${{ matrix.device }}
         id: mos_build
-      - run: echo $(ls)
-      - run: echo $(find . -type f)
       - uses: actions/upload-artifact@v2.3.0
         with:
           name: mg2esphome-${{ matrix.device }}
@@ -63,6 +61,28 @@ jobs:
   test:
     name: Test Builds
     runs-on: ubuntu-latest
-    needs: [setup, build_esphome_firmware, build_migration_firmware]
+    needs: [build_esphome_firmware, build_migration_firmware]
     steps:
       - uses: actions/download-artifact@v2
+
+  publish:
+    name: Publish new firmware and website to GitHub Pages
+    runs-on: ubuntu-latest
+    needs: [build_esphome_firmware]
+    steps:
+      - uses: actions/checkout@v2.4.0
+      - uses: actions/download-artifact@v2.1.0
+        with:
+          path: output
+
+      - name: Create single manifest.json
+        run: |
+          jq -s '{"name": "Shelly for ESPHome", "version": "${{ needs.build_esphome_firmware.outputs.esphome-version }}", "home_assistant_domain": "esphome", "new_install_skip_erase": false, "builds":.}' output/*/manifest.json > output/manifest.json
+
+      - run: cp -R static/* output
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@4.1.6
+        with:
+          branch: gh-pages
+          folder: output
