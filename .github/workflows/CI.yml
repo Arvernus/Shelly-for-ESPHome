@@ -34,24 +34,4 @@ jobs:
       - uses: actions/upload-artifact@v2.3.0
         with:
           name: ${{ steps.esphome-build.outputs.name }}
-          path: ${{ steps.esphome-build.outputs.name }}
-
-  build_mirgration_firmware:
-    name: Build Migration Firmware for ${{ matrix.file }}
-    needs: [prepare, build_esphome_firmware]
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        device: ${{ fromJson(needs.prepare.outputs.devices) }}
-      steps:
-        - uses: actions/checkout@v2.4.0
-        - uses: actions/download-artifact@v2.1.0
-          with:
-            name: esphome_firmware*
-            path: esphome_firmware
-        - name: Build firmware
-          uses: yaourdt/mongoose-os-action@v1.0.2
-          with:
-            mos-yml-path: mirgration_firmware
-            build-var: MODEL=${{ matrix.device }}
-          id: mos_build
+          path: esphome_firmware/${{ steps.esphome-build.outputs.name }}
