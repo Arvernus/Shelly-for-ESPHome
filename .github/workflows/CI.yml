@@ -35,6 +35,7 @@ jobs:
         with:
           name: ${{ matrix.device }}
           path: ${{ steps.esphome-build.outputs.name }}
+          if-no-files-found: error
 
   build_mirgration_firmware:
     name: Build Migration Firmware for ${{ matrix.device }}
@@ -59,6 +60,7 @@ jobs:
         with:
           name: mg2esphome-${{ matrix.device }}
           path: ./build/fw.zip
+          if-no-files-found: error
   test:
     name: Test Builds
     runs-on: ubuntu-latest
