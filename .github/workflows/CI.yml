@@ -38,7 +38,7 @@ jobs:
 
   build_mirgration_firmware:
     name: Build Migration Firmware for ${{ matrix.file }}
-    needs: [prepare, build_esphome_firmware]
+    needs: [setup, build_esphome_firmware]
     runs-on: ubuntu-latest
     strategy:
       matrix:
