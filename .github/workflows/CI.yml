@@ -48,3 +48,9 @@ jobs:
       - uses: actions/download-artifact@v2.1.0
         with:
           path: esphome_firmware
+      - name: Build firmware
+        uses: yaourdt/mongoose-os-action@v1.0.2
+        with:
+          mos-yml-path: mirgration_firmware
+          build-var: MODEL=${{ matrix.device }}
+        id: mos_build
