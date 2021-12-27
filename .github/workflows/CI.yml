@@ -42,15 +42,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        device: ${{ fromJson(needs.prepare.outputs.devices) }}
+        device: ${{ fromJSON(needs.setup.outputs.devices) }}
       steps:
         - uses: actions/checkout@v2.4.0
         - uses: actions/download-artifact@v2.1.0
           with:
             path: esphome_firmware
-        - name: Build firmware
-          uses: yaourdt/mongoose-os-action@v1.0.2
-          with:
-            mos-yml-path: mirgration_firmware
-            build-var: MODEL=${{ matrix.device }}
-          id: mos_build
