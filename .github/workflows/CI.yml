@@ -54,3 +54,7 @@ jobs:
           mos-yml-path: mirgation_firmware
           build-var: MODEL=${{ matrix.device }}
         id: mos_build
+      - uses: actions/upload-artifact@v2.3.0
+        with:
+          name: mg2esphome-${{ steps.esphome-build.outputs.name }}
+          path: ./build/fw.zip
