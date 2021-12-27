@@ -43,8 +43,8 @@ jobs:
     strategy:
       matrix:
         device: ${{ fromJSON(needs.setup.outputs.devices) }}
-      steps:
-        - uses: actions/checkout@v2.4.0
-        - uses: actions/download-artifact@v2.1.0
-          with:
-            path: esphome_firmware
+    steps:
+      - uses: actions/checkout@v2.4.0
+      - uses: actions/download-artifact@v2.1.0
+        with:
+          path: esphome_firmware
