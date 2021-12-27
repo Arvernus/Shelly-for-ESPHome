@@ -33,8 +33,8 @@ jobs:
           yaml_file: ${{ matrix.device }}-for-ESPHome.yaml
       - name: Complet manifest.json
         run: |
-          mv ${{ steps.esphome-build.outputs.name }}/manifest.json ${{ steps.esphome-build.outputs.name }}/thismanifest.json
-          jq -s '{"name": "${{ matrix.device }} for ESPHome", "version": "${{ steps.esphome-build.outputs.esphome-version }}", "home_assistant_domain": "esphome", "new_install_skip_erase": false, "builds":.}' ${{ steps.esphome-build.outputs.name }}/thismanifest.json > ${{ steps.esphome-build.outputs.name }}/manifest.json
+          sudo mv ${{ steps.esphome-build.outputs.name }}/manifest.json ${{ steps.esphome-build.outputs.name }}/thismanifest.json
+          sudo jq -s '{"name": "${{ matrix.device }} for ESPHome", "version": "${{ steps.esphome-build.outputs.esphome-version }}", "home_assistant_domain": "esphome", "new_install_skip_erase": false, "builds":.}' ${{ steps.esphome-build.outputs.name }}/thismanifest.json > ${{ steps.esphome-build.outputs.name }}/manifest.json
       - uses: actions/upload-artifact@v2.3.0
         with:
           name: ${{ matrix.device }}
