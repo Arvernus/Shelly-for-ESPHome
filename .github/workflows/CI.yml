@@ -59,7 +59,7 @@ jobs:
       - uses: actions/upload-artifact@v2.3.0
         with:
           name: mg2esphome-${{ matrix.device }}
-          path: ./build/fw.zip
+          path: ./build/
           if-no-files-found: error
   test:
     name: Test Builds
