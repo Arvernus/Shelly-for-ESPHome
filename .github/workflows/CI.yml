@@ -49,10 +49,11 @@ jobs:
         with:
           path: mirgration_firmware
       - name: Build firmware
-        uses: yaourdt/mongoose-os-action@v1.0.2
+        uses: yaourdt/mongoose-os-action@v2.0.2
         with:
           mos-yml-path: mirgation_firmware
-          build-var: MODEL=${{ matrix.device }}
+          platform: esp8266
+          build-args: --build-var MODEL=${{ matrix.device }}
         id: mos_build
       - uses: actions/upload-artifact@v2.3.0
         with:
