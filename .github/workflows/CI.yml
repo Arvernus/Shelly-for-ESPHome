@@ -33,7 +33,8 @@ jobs:
           path: output
         continue-on-error: true
       - run: |
-          echo "test ${{ matrix.device }}" >> output/install_esphome_buttons.md
+          echo "## Upload ESPHome to ${{ matrix.device }}" >> output/install_esphome_buttons.md
+          echo "<esp-web-install-button manifest="./${{ matrix.device }}/manifest.json"><button slot="activate">Install ${{ matrix.device }} Firmware</button></esp-web-install-button>" >> output/install_esphome_buttons.md
       - uses: actions/upload-artifact@v2.1.0
         with:
           name: deploy
@@ -114,7 +115,7 @@ jobs:
     if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true && github.event.pull_request.branch =='main'
     name: Publish new firmware and website to GitHub Pages
     runs-on: ubuntu-latest
-    needs: [test]
+    needs: [test, setup_deploy]
     steps:
       - uses: actions/checkout@v2.4.0
       - uses: actions/download-artifact@v2.1.0
