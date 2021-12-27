@@ -124,7 +124,7 @@ jobs:
       - run: |
           cp -R static/* output
           mv output/deploy deploy
-          deploy/install_esphome_buttons.md >> output/index.md
+          echo "$(<deploy/install_esphome_buttons.md)" >> output/index.md
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@4.1.6
         with:
