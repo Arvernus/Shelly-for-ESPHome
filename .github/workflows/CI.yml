@@ -33,7 +33,7 @@ jobs:
           yaml_file: ${{ matrix.device }}-for-ESPHome.yaml
       - name: Complet manifest.json
         run: |
-          echo  $(ls ${{ steps.esphome-build.outputs.name }})
+          chmod +rwx ${{ steps.esphome-build.outputs.name }}
           jq -s '{"name": "${{ matrix.device }} for ESPHome", "version": "${{ steps.esphome-build.outputs.esphome-version }}", "home_assistant_domain": "esphome", "new_install_skip_erase": false, "builds":.}' ${{ steps.esphome-build.outputs.name }}/manifest.json > ${{ steps.esphome-build.outputs.name }}/manifest.json
       - uses: actions/upload-artifact@v2.3.0
         with:
