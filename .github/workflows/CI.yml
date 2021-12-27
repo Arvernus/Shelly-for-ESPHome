@@ -29,6 +29,7 @@ jobs:
         with:
           name: deploy
           path: output
+        continue-on-error: true
       - run: |
           echo "test ${{ matrix.device }}" >> output/install_esphome_buttons.md
       - uses: actions/upload-artifact@v2.1.0
