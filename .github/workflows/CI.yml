@@ -58,3 +58,9 @@ jobs:
         with:
           name: mg2esphome-${{ matrix.device }}
           path: ./build/fw.zip
+  test:
+    name: Test Builds
+    runs-on: ubuntu-latest
+    needs: [setup, build_esphome_firmware, build_mirgration_firmware]
+    steps:
+      - uses: actions/download-artifact@v2
