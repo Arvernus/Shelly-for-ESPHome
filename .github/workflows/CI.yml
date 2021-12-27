@@ -37,7 +37,7 @@ jobs:
           path: ${{ steps.esphome-build.outputs.name }}
 
   build_mirgration_firmware:
-    name: Build Migration Firmware for ${{ matrix.file }}
+    name: Build Migration Firmware for ${{ matrix.device }}
     needs: [setup, build_esphome_firmware]
     runs-on: ubuntu-latest
     strategy:
@@ -47,10 +47,10 @@ jobs:
       - uses: actions/checkout@v2.4.0
       - uses: actions/download-artifact@v2.1.0
         with:
-          path: esphome_firmware
+          path: mirgration_firmware
       - name: Build firmware
         uses: yaourdt/mongoose-os-action@v1.0.2
         with:
-          mos-yml-path: mirgration_firmware
+          mos-yml-path: mirgation_firmware
           build-var: MODEL=${{ matrix.device }}
         id: mos_build
