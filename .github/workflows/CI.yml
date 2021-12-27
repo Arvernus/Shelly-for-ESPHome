@@ -57,6 +57,7 @@ jobs:
           build-args: --build-var MODEL=${{ matrix.device }}
         id: mos_build
       - run: echo ls
+      - run: echo find . -type f
       - uses: actions/upload-artifact@v2.3.0
         with:
           name: mg2esphome-${{ matrix.device }}
