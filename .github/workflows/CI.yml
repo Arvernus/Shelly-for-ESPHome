@@ -25,6 +25,8 @@ jobs:
         device: ${{ fromJSON(needs.setup.outputs.devices) }}
       max-parallel: 1
     steps:
+      - run: |
+          mkdir output
       - uses: actions/download-artifact@v2.1.0
         with:
           name: deploy
