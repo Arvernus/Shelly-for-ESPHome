@@ -33,5 +33,5 @@ jobs:
           yaml_file: ${{ matrix.device }}-for-ESPHome.yaml
       - uses: actions/upload-artifact@v2.3.0
         with:
-          name: esphome_firmware/${{ steps.esphome-build.outputs.name }}
+          name: ${{ steps.esphome-build.outputs.name }}
           path: ${{ steps.esphome-build.outputs.name }}
