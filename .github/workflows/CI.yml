@@ -33,7 +33,7 @@ jobs:
           yaml_file: ${{ matrix.device }}-for-ESPHome.yaml
       - uses: actions/upload-artifact@v2.3.0
         with:
-          name: ${{ steps.esphome-build.outputs.name }}
+          name: ${{ matrix.device }}
           path: ${{ steps.esphome-build.outputs.name }}
 
   build_mirgration_firmware:
@@ -56,5 +56,5 @@ jobs:
         id: mos_build
       - uses: actions/upload-artifact@v2.3.0
         with:
-          name: mg2esphome-${{ steps.esphome-build.outputs.name }}
+          name: mg2esphome-${{ matrix.device }}
           path: mirgration_firmware/build/fw.zip
