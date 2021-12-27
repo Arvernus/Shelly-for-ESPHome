@@ -52,7 +52,7 @@ jobs:
       - name: Complet manifest.json
         run: |
           mv output/manifest.json manifest.json
-          jq -s '{"name": "${{ matrix.device }} for ESPHome", "version": "${{ steps.esphome-build.outputs.esphome-version }}", "home_assistant_domain": "esphome", "new_install_skip_erase": false, "builds":.}' manifest.json > output/manifest.json
+          jq -s '{"name": "${{ matrix.device }} for ESPHome", "version": "${{ needs.build_esphome_firmware.outputs.esphome-version }}", "home_assistant_domain": "esphome", "new_install_skip_erase": false, "builds":.}' manifest.json > output/manifest.json
       - uses: actions/upload-artifact@v2.3.0
         with:
           name: ${{ matrix.device }}
