@@ -1,0 +1,321 @@
+author: mark dornbach <mark@dornbach.io>
+description: a minimal firmware for ota flashing tasmota from mongoose os
+platform: esp8266
+version: 0.4.6
+
+libs_version: ${mos.version}
+modules_version: ${mos.version}
+mongoose_os_version: ${mos.version}
+manifest_version: 2020-01-29
+sources: [src]
+filesystem: [fs]
+tags: [c, tuya, tasmota, mongoose]
+
+# Custom configuration
+config_schema:
+  #### sys ####
+  - ["debug.level", 2] # 0 = ERROR, 1 = WARN, 2 = INFO, 3+ = DEBUG
+  #### wifi ####
+  - ["wifi.ap.enable", false]
+  - ["wifi.sta.enable", true] # join wifi as client
+  - ["sta_connect_timeout", 30] # timeout for wifi connection / seconds
+  - ["wifi.sta1.ssid", "mgos-recover"] # fallback SSID
+  - ["wifi.sta1.pass", "RJoPuKC3u5"] # fallback password
+  - ["mg2x", "o", { "title": "Settings for this firmware" }]
+
+# External libs
+libs:
+  - origin: https://github.com/mongoose-os-libs/boards # board definitions library
+  - origin: https://github.com/mongoose-os-libs/ota-common # OTA support
+  - origin: https://github.com/mongoose-os-libs/rpc-common # shared RPC API
+  - origin: https://github.com/mongoose-os-libs/rpc-uart # RPC via serial console
+  - origin: https://github.com/mongoose-os-libs/rpc-service-config # manage device configuration remotely
+  - origin: https://github.com/mongoose-os-libs/ca-bundle # CA certificates
+  - origin: https://github.com/mongoose-os-libs/ota-http-server # local OTA update via HTTP POST
+
+conds:
+  - when: build_vars.MODEL == "Shelly1"
+    apply:
+      name: switch1
+      build_vars:
+        FS_SIZE: 262144
+        FLASH_SIZE: 2097152
+        BOOT_CONFIG_ADDR: 0x1000
+        MGOS_ROOT_FS_TYPE: SPIFFS
+      config_schema:
+        - [
+            "mg2x.url",
+            "s",
+            "https://arvernus.github.io/Shelly-for-ESPHome/shelly-1/firmware.bin",
+            { "title": "URL of target firmware" },
+          ]
+  - when: build_vars.MODEL == "Shelly1PM"
+    apply:
+      name: switch1pm
+      build_vars:
+        FS_SIZE: 262144
+        FLASH_SIZE: 2097152
+        BOOT_CONFIG_ADDR: 0x1000
+        MGOS_ROOT_FS_TYPE: SPIFFS
+      config_schema:
+        - [
+            "mg2x.url",
+            "s",
+            "https://arvernus.github.io/Shelly-for-ESPHome/shelly-1-pm/firmware.bin",
+            { "title": "URL of target firmware" },
+          ]
+  - when: build_vars.MODEL == "ShellyPlugS"
+    apply:
+      name: shelly-plug-s
+      build_vars:
+        FS_SIZE: 262144
+        FLASH_SIZE: 2097152
+        BOOT_CONFIG_ADDR: 0x7000
+        MGOS_ROOT_FS_TYPE: SPIFFS
+      config_schema:
+        - [
+            "mg2x.url",
+            "s",
+            "https://arvernus.github.io/Shelly-for-ESPHome/shelly-1-pm/firmware.bin",
+            { "title": "URL of target firmware" },
+          ]
+  - when: build_vars.MODEL == "Shelly2"
+    apply:
+      name: switch
+      build_vars:
+        FS_SIZE: 262144
+        FLASH_SIZE: 2097152
+        BOOT_CONFIG_ADDR: 0x1000
+        MGOS_ROOT_FS_TYPE: SPIFFS
+      config_schema:
+        - [
+            "mg2x.url",
+            "s",
+            "https://arvernus.github.io/Shelly-for-ESPHome/shelly-1-pm/firmware.bin",
+            { "title": "URL of target firmware" },
+          ]
+  - when: build_vars.MODEL == "Shelly25"
+    apply:
+      name: switch25
+      build_vars:
+        FS_SIZE: 262144
+        FLASH_SIZE: 2097152
+        BOOT_CONFIG_ADDR: 0x1000
+        MGOS_ROOT_FS_TYPE: SPIFFS
+      config_schema:
+        - [
+            "mg2x.url",
+            "s",
+            "https://arvernus.github.io/Shelly-for-ESPHome/shelly-1-pm/firmware.bin",
+            { "title": "URL of target firmware" },
+          ]
+  - when: build_vars.MODEL == "ShellyRGBW2"
+    apply:
+      name: rgbw2-color
+      build_vars:
+        FS_SIZE: 262144
+        FLASH_SIZE: 2097152
+        BOOT_CONFIG_ADDR: 0x7000
+        MGOS_ROOT_FS_TYPE: SPIFFS
+      config_schema:
+        - [
+            "mg2x.url",
+            "s",
+            "https://arvernus.github.io/Shelly-for-ESPHome/shelly-1-pm/firmware.bin",
+            { "title": "URL of target firmware" },
+          ]
+  - when: build_vars.MODEL == "ShellyDimmer1"
+    apply:
+      name: dimmer
+      build_vars:
+        FS_SIZE: 262144
+        FLASH_SIZE: 2097152
+        BOOT_CONFIG_ADDR: 0x7000
+        MGOS_ROOT_FS_TYPE: SPIFFS
+      config_schema:
+        - [
+            "mg2x.url",
+            "s",
+            "https://arvernus.github.io/Shelly-for-ESPHome/shelly-1-pm/firmware.bin",
+            { "title": "URL of target firmware" },
+          ]
+  - when: build_vars.MODEL == "ShellyDimmer2"
+    apply:
+      name: dimmer-l51
+      build_vars:
+        FS_SIZE: 262144
+        FLASH_SIZE: 2097152
+        BOOT_CONFIG_ADDR: 0x7000
+        MGOS_ROOT_FS_TYPE: SPIFFS
+      config_schema:
+        - [
+            "mg2x.url",
+            "s",
+            "https://arvernus.github.io/Shelly-for-ESPHome/shelly-1-pm/firmware.bin",
+            { "title": "URL of target firmware" },
+          ]
+  - when: build_vars.MODEL == "ShellyEM"
+    apply:
+      name: shellyem
+      build_vars:
+        FS_SIZE: 262144
+        FLASH_SIZE: 2097152
+        BOOT_CONFIG_ADDR: 0x1000
+        MGOS_ROOT_FS_TYPE: SPIFFS
+      config_schema:
+        - [
+            "mg2x.url",
+            "s",
+            "https://arvernus.github.io/Shelly-for-ESPHome/shelly-1-pm/firmware.bin",
+            { "title": "URL of target firmware" },
+          ]
+  - when: build_vars.MODEL == "ShellyBulb"
+    apply:
+      name: bulb
+      build_vars:
+        FS_SIZE: 262144
+        FLASH_SIZE: 2097152
+        BOOT_CONFIG_ADDR: 0x7000
+        MGOS_ROOT_FS_TYPE: SPIFFS
+      config_schema:
+        - [
+            "mg2x.url",
+            "s",
+            "https://arvernus.github.io/Shelly-for-ESPHome/shelly-1-pm/firmware.bin",
+            { "title": "URL of target firmware" },
+          ]
+  - when: build_vars.MODEL == "ShellyVintage"
+    apply:
+      name: bulb6w
+      build_vars:
+        FS_SIZE: 262144
+        FLASH_SIZE: 2097152
+        BOOT_CONFIG_ADDR: 0x7000
+        MGOS_ROOT_FS_TYPE: SPIFFS
+      config_schema:
+        - [
+            "mg2x.url",
+            "s",
+            "https://arvernus.github.io/Shelly-for-ESPHome/shelly-1-pm/firmware.bin",
+            { "title": "URL of target firmware" },
+          ]
+  - when: build_vars.MODEL == "ShellyPlugUS"
+    apply:
+      name: shelly-plug-u1
+      build_vars:
+        FS_SIZE: 262144
+        FLASH_SIZE: 2097152
+        BOOT_CONFIG_ADDR: 0x7000
+        MGOS_ROOT_FS_TYPE: SPIFFS
+      config_schema:
+        - [
+            "mg2x.url",
+            "s",
+            "https://arvernus.github.io/Shelly-for-ESPHome/shelly-1-pm/firmware.bin",
+            { "title": "URL of target firmware" },
+          ]
+  - when: build_vars.MODEL == "ShellyHT"
+    apply:
+      name: ht-sensor
+      build_vars:
+        FS_SIZE: 262144
+        FLASH_SIZE: 2097152
+        BOOT_CONFIG_ADDR: 0x7000
+        MGOS_ROOT_FS_TYPE: SPIFFS
+      config_schema:
+        - [
+            "mg2x.url",
+            "s",
+            "https://arvernus.github.io/Shelly-for-ESPHome/shelly-1-pm/firmware.bin",
+            { "title": "URL of target firmware" },
+          ]
+  - when: build_vars.MODEL == "ShellyDuo"
+    apply:
+      name: bulbduo
+      build_vars:
+        FS_SIZE: 262144
+        FLASH_SIZE: 2097152
+        BOOT_CONFIG_ADDR: 0x7000
+        MGOS_ROOT_FS_TYPE: SPIFFS
+      config_schema:
+        - [
+            "mg2x.url",
+            "s",
+            "https://arvernus.github.io/Shelly-for-ESPHome/shelly-1-pm/firmware.bin",
+            { "title": "URL of target firmware" },
+          ]
+  - when: build_vars.MODEL == "ShellyI3"
+    apply:
+      name: ix3
+      build_vars:
+        FS_SIZE: 262144
+        FLASH_SIZE: 2097152
+        BOOT_CONFIG_ADDR: 0x1000
+        MGOS_ROOT_FS_TYPE: SPIFFS
+      config_schema:
+        - [
+            "mg2x.url",
+            "s",
+            "https://arvernus.github.io/Shelly-for-ESPHome/shelly-1-pm/firmware.bin",
+            { "title": "URL of target firmware" },
+          ]
+  - when: build_vars.MODEL == "Shelly1L"
+    apply:
+      name: switch1l
+      build_vars:
+        FS_SIZE: 262144
+        FLASH_SIZE: 2097152
+        BOOT_CONFIG_ADDR: 0x1000
+        MGOS_ROOT_FS_TYPE: SPIFFS
+      config_schema:
+        - [
+            "mg2x.url",
+            "s",
+            "https://arvernus.github.io/Shelly-for-ESPHome/shelly-1-pm/firmware.bin",
+            { "title": "URL of target firmware" },
+          ]
+  - when: build_vars.MODEL == "ShellyPlug2"
+    apply:
+      name: shelly-plug2
+      build_vars:
+        FS_SIZE: 262144
+        FLASH_SIZE: 4194304
+        BOOT_CONFIG_ADDR: 0x7000
+        MGOS_ROOT_FS_TYPE: SPIFFS
+      config_schema:
+        - [
+            "mg2x.url",
+            "s",
+            "https://arvernus.github.io/Shelly-for-ESPHome/shelly-1-pm/firmware.bin",
+            { "title": "URL of target firmware" },
+          ]
+  - when: build_vars.MODEL == "ShellyUni"
+    apply:
+      name: uni
+      build_vars:
+        FS_SIZE: 262144
+        FLASH_SIZE: 2097152
+        BOOT_CONFIG_ADDR: 0x1000
+        MGOS_ROOT_FS_TYPE: SPIFFS
+      config_schema:
+        - [
+            "mg2x.url",
+            "s",
+            "https://arvernus.github.io/Shelly-for-ESPHome/shelly-1-pm/firmware.bin",
+            { "title": "URL of target firmware" },
+          ]
+  - when: build_vars.MODEL == "ShellyDuoRGBW"
+    apply:
+      name: color-bulb
+      build_vars:
+        FS_SIZE: 262144
+        FLASH_SIZE: 2097152
+        BOOT_CONFIG_ADDR: 0x1000
+        MGOS_ROOT_FS_TYPE: SPIFFS
+      config_schema:
+        - [
+            "mg2x.url",
+            "s",
+            "https://arvernus.github.io/Shelly-for-ESPHome/shelly-1-pm/firmware.bin",
+            { "title": "URL of target firmware" },
+          ]
