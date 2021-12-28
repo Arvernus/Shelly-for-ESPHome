@@ -2,6 +2,13 @@
 substitutions:
   devicename: "shelly-plug-s"
   use_led: "true"
+  # Higher value gives lower watt readout
+  current_res: "0.00290"
+  # Lower value gives lower voltage readout
+  voltage_div: "940"
+
+  max_power: "2000"
+  max_temp: "70.0"
 
 esphome:
   platform: ESP8266
@@ -85,7 +92,7 @@ status_led:
 sensor:
   - platform: ntc
     sensor: temp_resistance_reading
-    name: ${devicename_h} Temperatur
+    name: ${devicename} Temperatur
     unit_of_measurement: "°C"
     accuracy_decimals: 1
     entity_category: diagnostic
@@ -101,9 +108,9 @@ sensor:
           - homeassistant.service:
               service: persistent_notification.create
               data:
-                title: Nachricht von ${devicename_h}
+                title: Nachricht von ${devicename}
               data_template:
-                message: ${devicename_h} hat sich ausgeschaltet da die Maximaltemperatur von ${max_temp}°C erreicht wurde.
+                message: ${devicename} hat sich ausgeschaltet da die Maximaltemperatur von ${max_temp}°C erreicht wurde.
   - platform: resistance
     id: temp_resistance_reading
     sensor: temp_analog_reading
@@ -149,7 +156,7 @@ sensor:
                 data:
                   title: Nachricht von ${devicename}
                 data_template:
-                  message: ${devicename_h} hat sich ausgeschaltet da die Maximalleistung von ${max_power}W erreicht wurde.
+                  message: ${devicename} hat sich ausgeschaltet da die Maximalleistung von ${max_power}W erreicht wurde.
     update_interval: 1s
 
   - platform: total_daily_energy
