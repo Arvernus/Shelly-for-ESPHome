@@ -10,6 +10,6 @@ You can use the button below to install the pre-built firmware directly to your 
 
 <!-- The Buttons may be added while deploying. -->
 ## Upload ESPHome to Shelly1
-<esp-web-install-button manifest=./Shelly1/manifest.json><button slot=activate>Install Shelly1 Firmware</button></esp-web-install-button>
+<esp-web-install-button manifest="./Shelly1/manifest.json"><button slot=activate>Install Shelly1 Firmware</button></esp-web-install-button>
 ## Upload ESPHome to Shelly1PM
-<esp-web-install-button manifest=./Shelly1PM/manifest.json><button slot=activate>Install Shelly1PM Firmware</button></esp-web-install-button>
+<esp-web-install-button manifest="./Shelly1PM/manifest.json"><button slot=activate>Install Shelly1PM Firmware</button></esp-web-install-button>
