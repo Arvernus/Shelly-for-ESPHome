@@ -103,16 +103,16 @@ jobs:
           file: ${{ matrix.device }}-for-ESPHome.yaml
           esphomename: substitutions.devicename
       - run: |
-          printf "\napply:" >> migration_firmware/mos.yml
-          printf "\n  name: ${{ steps.get_esphome_name.outputs.esphomename }}" >> migration_firmware/mos.yml
-          printf "\n  config_schema:" >> migration_firmware/mos.yml
-          printf "\n    - [" >> migration_firmware/mos.yml
-          printf "\n        mg2x.url," >> migration_firmware/mos.yml
-          printf "\n        s," >> migration_firmware/mos.yml
-          printf "\n        \"https://arvernus.github.io/Shelly-for-ESPHome/${{ steps.get_esphome_name.outputs.esphomename }}/firmware.bin\"," >> migration_firmware/mos.yml
-          printf "\n        {title: URL of target firmware}," >> migration_firmware/mos.yml
-          printf "\n      ]" >> migration_firmware/mos.yml
-          cat migration_firmware/mos.yml
+          printf "\n  - when: build_vars.MODEL == \"${{ matrix.device }}\"" >> migration_firmware/mos.yml
+          printf "\n    apply:" >> migration_firmware/mos.yml
+          printf "\n      name: ${{ steps.get_esphome_name.outputs.esphomename }}" >> migration_firmware/mos.yml
+          printf "\n      config_schema:" >> migration_firmware/mos.yml
+          printf "\n        - [" >> migration_firmware/mos.yml
+          printf "\n            mg2x.url," >> migration_firmware/mos.yml
+          printf "\n            s," >> migration_firmware/mos.yml
+          printf "\n            \"https://arvernus.github.io/Shelly-for-ESPHome/${{ steps.get_esphome_name.outputs.esphomename }}/firmware.bin\"," >> migration_firmware/mos.yml
+          printf "\n            {title: URL of target firmware}," >> migration_firmware/mos.yml
+          printf "\n          ]" >> migration_firmware/mos.yml
       - name: Build firmware
         uses: yaourdt/mongoose-os-action@v2.0.2
         with:
@@ -133,7 +133,7 @@ jobs:
       - uses: actions/download-artifact@v2
 
   publish:
-    #if: github.event.action == 'closed' && github.event.pull_request.merged == true && github.event.pull_request.branch =='main'
+    if: github.event.action == 'closed' && github.event.pull_request.merged == true && github.event.pull_request.branch =='main'
     name: Publish new firmware and website to GitHub Pages
     runs-on: ubuntu-latest
     needs: [test, setup_deploy]
