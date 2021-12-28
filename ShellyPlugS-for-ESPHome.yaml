@@ -1,7 +1,7 @@
 # These substitutions allow the end user to override certain values
 substitutions:
   devicename: "shelly-plug-s"
-  led_in_use: "true"
+  use_led: "true"
 
 esphome:
   platform: ESP8266
