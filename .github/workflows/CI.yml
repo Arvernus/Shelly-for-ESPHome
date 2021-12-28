@@ -27,7 +27,9 @@ jobs:
     steps:
       - run: |
           mkdir output
+          echo ${{fromJSON(needs.setup.outputs.devices)}}
       - uses: actions/download-artifact@v2.1.0
+        #if:  ${{!startsWith(fromJSON(needs.setup.outputs.devices), matrix.device)}}
         with:
           name: deploy
           path: output
