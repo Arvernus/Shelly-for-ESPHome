@@ -58,16 +58,6 @@ output:
     id: shelly_led
 
 binary_sensor:
-  - platform: template
-    name: LED Used
-    id: led_in_use
-    internal: true
-    lambda: >-
-      if (!${use_led}){
-        return false;
-      } else {
-        return true;
-      }
   - platform: gpio
     internal: true
     pin:
@@ -82,7 +72,7 @@ binary_sensor:
       - if:
           condition:
             lambda: |-
-              return ${led_in_use};
+              return ${use_led};
           then:
             output.toggle: shelly_led
     id: button
