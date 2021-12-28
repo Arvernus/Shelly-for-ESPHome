@@ -129,20 +129,20 @@ sensor:
     current_resistor: ${current_res}
     voltage_divider: ${voltage_div}
     current:
-      name: "${channel_1} Stromstärke"
+      name: "${devicename} Power"
       internal: true
       unit_of_measurement: "A"
       accuracy_decimals: 3
       icon: mdi:flash-outline
       entity_category: diagnostic
     voltage:
-      name: "${channel_1} Spannung"
+      name: "${devicename} Current"
       internal: true
       unit_of_measurement: "V"
       icon: mdi:flash-outline
       entity_category: diagnostic
     power:
-      name: "${channel_1} Leistung"
+      name: "${devicename} Power"
       id: power
       unit_of_measurement: "W"
       icon: mdi:flash-outline
@@ -160,7 +160,7 @@ sensor:
     update_interval: 1s
 
   - platform: total_daily_energy
-    name: "${channel_1} Stromzähler (täglich)"
+    name: "${devicename} Dayly Total"
     power_id: power
     filters:
       # Multiplication factor from W to kW is 0.001
