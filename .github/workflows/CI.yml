@@ -33,8 +33,8 @@ jobs:
           path: output
         continue-on-error: true
       - run: |
-          echo "## Upload ESPHome to ${{ matrix.device }}" >> output/install_esphome_buttons.md
-          echo "<esp-web-install-button manifest=\"./${{ matrix.device }}/manifest.json\"><button slot=\"activate\">\Install ${{ matrix.device }} Firmware\</button></esp-web-install-button>" >> output/install_esphome_buttons.md
+          echo "\n## Upload ESPHome to ${{ matrix.device }}\n" >> output/install_esphome_buttons.md
+          echo "<esp-web-install-button manifest=\"./${{ matrix.device }}/manifest.json\"><button slot=\"activate\">Install ${{ matrix.device }} Firmware</button></esp-web-install-button>" >> output/install_esphome_buttons.md
       - uses: actions/upload-artifact@v2.1.0
         with:
           name: deploy
