@@ -28,7 +28,7 @@ ota:
 
 # This should point to the public location of this yaml file.
 dashboard_import:
-  package_import_url: github://Arvernus/Shelly-for-ESPHome/Shelly-1-for-ESPHome.yaml
+  package_import_url: github://Arvernus/Shelly-for-ESPHome/Shelly1-for-ESPHome.yaml
 
 wifi:
   # Set up a wifi access point

@@ -61,7 +61,7 @@ conds:
         - [
             "mg2x.url",
             "s",
-            "https://arvernus.github.io/Shelly-for-ESPHome/shelly-1-pm/firmware.bin",
+            "https://arvernus.github.io/Shelly-for-ESPHome/shelly-1/firmware.bin",
             { "title": "URL of target firmware" },
           ]
   - when: build_vars.MODEL == "ShellyPlugS"
@@ -76,7 +76,7 @@ conds:
         - [
             "mg2x.url",
             "s",
-            "https://arvernus.github.io/Shelly-for-ESPHome/shelly-1-pm/firmware.bin",
+            "https://arvernus.github.io/Shelly-for-ESPHome/shelly-plug-s/firmware.bin",
             { "title": "URL of target firmware" },
           ]
   - when: build_vars.MODEL == "Shelly2"
