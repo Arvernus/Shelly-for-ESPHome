@@ -1,0 +1,173 @@
+# These substitutions allow the end user to override certain values
+substitutions:
+  devicename: "shelly-plug-s"
+  led_in_use: "true"
+
+esphome:
+  platform: ESP8266
+  board: esp01_1m
+  name: ${devicename}
+  # Automatically add the mac address to the name
+  # so you can use a single firmware for all devices
+  name_add_mac_suffix: true
+
+  # This will allow for (future) project identification,
+  # configuration and updates.
+  project:
+    name: Arvernus.Shelly-Plug-S
+    version: "1.0"
+
+# To be able to get logs from the device via serial and api.
+logger:
+
+# API is a requirement of the dashboard import.
+api:
+
+# OTA is required for Over-the-Air updating
+ota:
+
+# This should point to the public location of this yaml file.
+dashboard_import:
+  package_import_url: github://Arvernus/Shelly-for-ESPHome/ShellyPlugS-for-ESPHome.yaml
+
+wifi:
+  # Set up a wifi access point
+  ap:
+    password: "12345678"
+
+# In combination with the `ap` this allows the user
+# to provision wifi credentials to the device.
+captive_portal:
+
+# Sets up the improv via serial client for Wi-Fi provisioning
+improv_serial:
+
+time:
+  - platform: sntp
+    id: sntp_time
+
+switch:
+  - platform: gpio
+    pin: GPIO15
+    id: shelly_relay
+
+output:
+  - platform: gpio
+    pin: GPIO00
+    inverted: true
+    id: shelly_led
+
+binary_sensor:
+  - platform: template
+    name: LED Used
+    id: led_in_use
+    internal: true
+    lambda: >-
+      if (!${use_led}){
+        return false;
+      } else {
+        return true;
+      }
+  - platform: gpio
+    internal: true
+    pin:
+      number: GPIO13
+      inverted: true
+    # small delay to prevent debouncing
+    filters:
+      - delayed_on_off: 50ms
+    # config for state change of input button
+    on_click:
+      - switch.toggle: shelly_relay
+      - if:
+          condition:
+            lambda: |-
+              return ${led_in_use};
+          then:
+            output.toggle: shelly_led
+    id: button
+
+status_led:
+  pin:
+    number: GPIO02
+    inverted: true
+
+sensor:
+  - platform: ntc
+    sensor: temp_resistance_reading
+    name: ${devicename_h} Temperatur
+    unit_of_measurement: "°C"
+    accuracy_decimals: 1
+    entity_category: diagnostic
+    icon: "mdi:thermometer"
+    calibration:
+      b_constant: 3350
+      reference_resistance: 10kOhm
+      reference_temperature: 298.15K
+    on_value_range:
+      - above: ${max_temp}
+        then:
+          - light.toggle: shelly_light
+          - homeassistant.service:
+              service: persistent_notification.create
+              data:
+                title: Nachricht von ${devicename_h}
+              data_template:
+                message: ${devicename_h} hat sich ausgeschaltet da die Maximaltemperatur von ${max_temp}°C erreicht wurde.
+  - platform: resistance
+    id: temp_resistance_reading
+    sensor: temp_analog_reading
+    configuration: DOWNSTREAM
+    resistor: 32kOhm
+  - platform: adc
+    id: temp_analog_reading
+    pin: A0
+
+  - platform: hlw8012
+    sel_pin:
+      number: GPIO12
+      inverted: true
+    cf_pin: GPIO05
+    cf1_pin: GPIO14
+    current_resistor: ${current_res}
+    voltage_divider: ${voltage_div}
+    current:
+      name: "${channel_1} Stromstärke"
+      internal: true
+      unit_of_measurement: "A"
+      accuracy_decimals: 3
+      icon: mdi:flash-outline
+      entity_category: diagnostic
+    voltage:
+      name: "${channel_1} Spannung"
+      internal: true
+      unit_of_measurement: "V"
+      icon: mdi:flash-outline
+      entity_category: diagnostic
+    power:
+      name: "${channel_1} Leistung"
+      id: power
+      unit_of_measurement: "W"
+      icon: mdi:flash-outline
+      entity_category: diagnostic
+      on_value_range:
+        - above: ${max_power}
+          then:
+            - light.toggle: shelly_light
+            - homeassistant.service:
+                service: persistent_notification.create
+                data:
+                  title: Nachricht von ${devicename}
+                data_template:
+                  message: ${devicename_h} hat sich ausgeschaltet da die Maximalleistung von ${max_power}W erreicht wurde.
+    update_interval: 1s
+
+  - platform: total_daily_energy
+    name: "${channel_1} Stromzähler (täglich)"
+    power_id: power
+    filters:
+      # Multiplication factor from W to kW is 0.001
+      - multiply: 0.001
+    unit_of_measurement: kWh
+    min_save_interval: 60s
+    entity_category: diagnostic
