@@ -88,13 +88,20 @@ jobs:
 
   build_migration_firmware:
     name: Build Migration Firmware for ${{ matrix.device }}
-    needs: [setup, build_esphome_firmware]
+    needs: [setup]
     runs-on: ubuntu-latest
     strategy:
       matrix:
         device: ${{ fromJSON(needs.setup.outputs.devices) }}
     steps:
       - uses: actions/checkout@v2.4.0
+      - uses: CumulusDS/get-yaml-paths-action@v0.1.0
+        id: get_name
+        with:
+          file: ${{ matrix.device }}-for-ESPHome.yaml
+          esphomename: substitutions.devicename
+      - run: |
+          printf "\n{apply: {name: ${{ get_name.esphomename }}, config_schema: [[mg2x.url, s, 'https://arvernus.github.io/Shelly-for-ESPHome/${{ get_name.esphomename }}/firmware.bin', {title: URL of target firmware}]]}}\n" >> migration_firmware/mos.yml
       - name: Build firmware
         uses: yaourdt/mongoose-os-action@v2.0.2
         with:

@@ -1,0 +1,15 @@
+{
+    "apply": {
+        "name": null,
+        "config_schema": [
+            [
+                "mg2x.url",
+                "s",
+                "https://arvernus.github.io/Shelly-for-ESPHome/shelly-1/firmware.bin",
+                {
+                    "title": "URL of target firmware"
+                }
+            ]
+        ]
+    }
+}
