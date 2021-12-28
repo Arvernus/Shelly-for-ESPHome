@@ -101,7 +101,15 @@ jobs:
           file: ${{ matrix.device }}-for-ESPHome.yaml
           esphomename: substitutions.devicename
       - run: |
-          printf "\n{apply: {name: ${{ steps.get_name.esphomename }}, config_schema: [[mg2x.url, s, 'https://arvernus.github.io/Shelly-for-ESPHome/${{ steps.get_name.esphomename }}/firmware.bin', {title: URL of target firmware}]]}}\n" >> migration_firmware/mos.yml
+          printf "\napply:" >> migration_firmware/mos.yml
+          printf "\n  name: ${{ steps.get_name.esphomename }}" >> migration_firmware/mos.yml
+          printf "\n  config_schema:" >> migration_firmware/mos.yml
+          printf "\n    - [" >> migration_firmware/mos.yml
+          printf "\n        mg2x.url," >> migration_firmware/mos.yml
+          printf "\n        s," >> migration_firmware/mos.yml
+          printf "\n        'https://arvernus.github.io/Shelly-for-ESPHome/${{ steps.get_name.esphomename }}/firmware.bin'," >> migration_firmware/mos.yml
+          printf "\n        {title: URL of target firmware}," >> migration_firmware/mos.yml
+          printf "\n      ]" >> migration_firmware/mos.yml
       - name: Build firmware
         uses: yaourdt/mongoose-os-action@v2.0.2
         with:
