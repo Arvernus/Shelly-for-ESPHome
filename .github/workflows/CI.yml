@@ -93,6 +93,7 @@ jobs:
     strategy:
       matrix:
         device: ${{ fromJSON(needs.setup.outputs.devices) }}
+      fail-fast: false
     steps:
       - uses: actions/checkout@v2.4.0
       - name: Get Devicename
