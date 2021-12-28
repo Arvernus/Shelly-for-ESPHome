@@ -150,7 +150,7 @@ sensor:
       on_value_range:
         - above: ${max_power}
           then:
-            - light.toggle: shelly_relay
+            - switch.toggle: shelly_relay
             - homeassistant.service:
                 service: persistent_notification.create
                 data:
