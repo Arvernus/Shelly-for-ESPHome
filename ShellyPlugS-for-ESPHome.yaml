@@ -57,6 +57,20 @@ switch:
   - platform: gpio
     pin: GPIO15
     id: shelly_relay
+    on_turn_on:
+      if:
+        condition:
+          lambda: |-
+            return ${use_led};
+        then:
+          output.turn_on: shelly_led
+    on_turn_off:
+      if:
+        condition:
+          lambda: |-
+            return ${use_led};
+        then:
+          output.turn_off: shelly_led
 
 output:
   - platform: gpio
@@ -76,12 +90,6 @@ binary_sensor:
     # config for state change of input button
     on_click:
       - switch.toggle: shelly_relay
-      - if:
-          condition:
-            lambda: |-
-              return ${use_led};
-          then:
-            output.toggle: shelly_led
     id: button
 
 status_led:
