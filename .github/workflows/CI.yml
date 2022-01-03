@@ -21,6 +21,9 @@ jobs:
           files=$(ls -m *-for-ESPHome.yaml | sed s/"-for-ESPHome.yaml"//g )
           fileslist=$(echo "$files" | jq -Rcn 'inputs | . / ", "')
           echo ::set-output name=devices::$fileslist
+          echo github.event.action == '${{ github.event.action }}'
+          echo github.event.pull_request.merged == ${{ github.event.pull_request.merged }}
+          echo github.event.pull_request.base.ref == '${{ github.event.pull_request.base.ref }}' 
 
   setup_deploy:
     name: Setup Deploy for ${{ matrix.device }}
