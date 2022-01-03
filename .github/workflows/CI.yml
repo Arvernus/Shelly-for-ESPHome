@@ -23,7 +23,7 @@ jobs:
           echo ::set-output name=devices::$fileslist
           echo github.event.action == '${{ github.event.action }}'
           echo github.event.pull_request.merged == ${{ github.event.pull_request.merged }}
-          echo github.event.pull_request.branch == '${{ github.event.pull_request.branch }}' 
+          echo github.event.pull_request.base.ref == '${{ github.event.pull_request.base.ref }}' 
 
   setup_deploy:
     name: Setup Deploy for ${{ matrix.device }}
