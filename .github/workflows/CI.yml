@@ -43,7 +43,7 @@ jobs:
           printf "<esp-web-install-button manifest=\"./${{ matrix.device }}/manifest.json\"><button slot=\"activate\">Install ${{ matrix.device }} Firmware</button></esp-web-install-button>" >> output/install_esphome_buttons.md
       - run: |
           printf "\n## ${{ matrix.device }}\n" >> output/install_esphome_buttons_from_stock.md
-          printf "\`\`\`\n https://arvernus.github.io/Shelly-for-ESPHome/mg2esphome-${{ matrix.device }}/fw.zip \n\`\`\`" >> output/install_esphome_buttons_from_stock.md
+          printf "\`\`\`\n /ota?url=http://arvernus.github.io/Shelly-for-ESPHome/mg2esphome-${{ matrix.device }}/fw.zip \n\`\`\`" >> output/install_esphome_buttons_from_stock.md
       - uses: actions/upload-artifact@v2.1.0
         with:
           name: deploy
