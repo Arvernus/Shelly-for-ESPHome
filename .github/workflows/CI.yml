@@ -116,7 +116,7 @@ jobs:
           printf "\n        - [" >> migration_firmware/mos.yml
           printf "\n            mg2x.url," >> migration_firmware/mos.yml
           printf "\n            s," >> migration_firmware/mos.yml
-          printf "\n            \"https://arvernus.github.io/Shelly-for-ESPHome/${{ steps.get_esphome_name.outputs.esphomename }}/firmware.bin\"," >> migration_firmware/mos.yml
+          printf "\n            \"http://arvernus.github.io/Shelly-for-ESPHome/${{ steps.get_esphome_name.outputs.esphomename }}/firmware.bin\"," >> migration_firmware/mos.yml
           printf "\n            {title: URL of target firmware}," >> migration_firmware/mos.yml
           printf "\n          ]" >> migration_firmware/mos.yml
       - name: Build firmware
