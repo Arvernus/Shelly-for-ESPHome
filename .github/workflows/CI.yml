@@ -137,6 +137,10 @@ jobs:
     needs: [build_esphome_firmware, build_migration_firmware, complet_manifest]
     steps:
       - uses: actions/download-artifact@v2
+      - run: |
+          echo github.event.action == '${{ github.event.action }}'
+          echo github.event.pull_request.merged == '${{ github.event.pull_request.merged }}'
+          echo github.event.pull_request.base.ref == '${{ github.event.pull_request.base.ref }}'
 
   publish:
     if: github.event.action == 'closed' && github.event.pull_request.merged == true && github.event.pull_request.base.ref =='main'
