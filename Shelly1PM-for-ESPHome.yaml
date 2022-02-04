@@ -150,4 +150,4 @@ binary_sensor:
             return ${is_button};
         then:
           switch.toggle: shelly_relay
-    id: button
+    id: switchid
