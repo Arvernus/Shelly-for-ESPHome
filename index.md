@@ -12,7 +12,13 @@ You can use the button below to install the pre-built firmware directly to your 
 
 ## Shelly1
 <esp-web-install-button manifest="./Shelly1/manifest.json"><button slot="activate">Install Shelly1 Firmware</button></esp-web-install-button>
+## Shelly25
+<esp-web-install-button manifest="./Shelly25/manifest.json"><button slot="activate">Install Shelly25 Firmware</button></esp-web-install-button>
 ## Shelly1
 ```
  /ota?url=http://arvernus.github.io/Shelly-for-ESPHome/mg2esphome-Shelly1/fw.zip 
+```
+## Shelly25
+```
+ /ota?url=http://arvernus.github.io/Shelly-for-ESPHome/mg2esphome-Shelly25/fw.zip 
 ```
