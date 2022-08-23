@@ -1,6 +1,6 @@
 {
   "name": "Shelly1 for ESPHome",
-  "version": "2021.12.3",
+  "version": "2022.8.0",
   "home_assistant_domain": "esphome",
   "new_install_skip_erase": false,
   "builds": [
