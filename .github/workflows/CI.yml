@@ -116,7 +116,6 @@ jobs:
           printf "\n        - [\"mg2x.url\", \"s\", \"http://ota.arvernus.info/Shelly-for-ESPHome/${{ matrix.device }}/firmware.bin\", {\"title\": \"URL of target firmware\"}]" >> migration_firmware/add-mos.yml
           echo "$(cat migration_firmware/add-mos.yml)"
           yq ea -i '. as $item ireduce ({}; . *+ $item )' migration_firmware/mos.yml migration_firmware/add-mos.yml
-          echo ${{ steps.get_esphome_name.outputs.esphomename }}
       - name: Build firmware
         uses: yaourdt/mongoose-os-action@v2.0.2
         with:
