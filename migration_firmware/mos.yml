@@ -34,8 +34,36 @@ libs:
   - origin: https://github.com/mongoose-os-libs/ota-http-server # local OTA update via HTTP POST
 
 conds:
+  - when: build_vars.TARGETFW == "tasmota"
+    apply:
+      config_schema:
+        - [
+            "mg2x.url",
+            "s",
+            "https://ota.tasmota.com/tasmota/release/tasmota.bin",
+            { "title": "URL of target firmware" },
+          ]
+  - when: build_vars.TARGETFW == "haa"
+    apply:
+      config_schema:
+        - [
+            "mg2x.url",
+            "s",
+            "https://github.com/RavenSystem/haa/releases/latest/download/fullhaaboot.bin",
+            { "title": "URL of target firmware" },
+          ]
+  - when: build_vars.TARGETFW == "espurna"
+    apply:
+      config_schema:
+        - [
+            "mg2x.url",
+            "s",
+            "https://github.com/xoseperez/espurna/releases/latest/download/espurna-1.14.1-espurna-base-1MB.bin",
+            { "title": "URL of target firmware" },
+          ]
   - when: build_vars.MODEL == "Shelly1"
     apply:
+      name: switch1
       build_vars:
         FS_SIZE: 262144
         FLASH_SIZE: 2097152
@@ -43,6 +71,7 @@ conds:
         MGOS_ROOT_FS_TYPE: SPIFFS
   - when: build_vars.MODEL == "Shelly1PM"
     apply:
+      name: switch1pm
       build_vars:
         FS_SIZE: 262144
         FLASH_SIZE: 2097152
@@ -50,6 +79,7 @@ conds:
         MGOS_ROOT_FS_TYPE: SPIFFS
   - when: build_vars.MODEL == "ShellyPlugS"
     apply:
+      name: shelly-plug-s
       build_vars:
         FS_SIZE: 262144
         FLASH_SIZE: 2097152
@@ -57,6 +87,7 @@ conds:
         MGOS_ROOT_FS_TYPE: SPIFFS
   - when: build_vars.MODEL == "Shelly2"
     apply:
+      name: switch
       build_vars:
         FS_SIZE: 262144
         FLASH_SIZE: 2097152
@@ -64,6 +95,7 @@ conds:
         MGOS_ROOT_FS_TYPE: SPIFFS
   - when: build_vars.MODEL == "Shelly25"
     apply:
+      name: switch25
       build_vars:
         FS_SIZE: 262144
         FLASH_SIZE: 2097152
@@ -71,6 +103,7 @@ conds:
         MGOS_ROOT_FS_TYPE: SPIFFS
   - when: build_vars.MODEL == "ShellyRGBW2"
     apply:
+      name: rgbw2-color
       build_vars:
         FS_SIZE: 262144
         FLASH_SIZE: 2097152
@@ -78,6 +111,7 @@ conds:
         MGOS_ROOT_FS_TYPE: SPIFFS
   - when: build_vars.MODEL == "ShellyDimmer1"
     apply:
+      name: dimmer
       build_vars:
         FS_SIZE: 262144
         FLASH_SIZE: 2097152
@@ -85,6 +119,7 @@ conds:
         MGOS_ROOT_FS_TYPE: SPIFFS
   - when: build_vars.MODEL == "ShellyDimmer2"
     apply:
+      name: dimmer-l51
       build_vars:
         FS_SIZE: 262144
         FLASH_SIZE: 2097152
@@ -92,6 +127,7 @@ conds:
         MGOS_ROOT_FS_TYPE: SPIFFS
   - when: build_vars.MODEL == "ShellyEM"
     apply:
+      name: shellyem
       build_vars:
         FS_SIZE: 262144
         FLASH_SIZE: 2097152
@@ -99,6 +135,7 @@ conds:
         MGOS_ROOT_FS_TYPE: SPIFFS
   - when: build_vars.MODEL == "ShellyBulb"
     apply:
+      name: bulb
       build_vars:
         FS_SIZE: 262144
         FLASH_SIZE: 2097152
@@ -106,6 +143,7 @@ conds:
         MGOS_ROOT_FS_TYPE: SPIFFS
   - when: build_vars.MODEL == "ShellyVintage"
     apply:
+      name: bulb6w
       build_vars:
         FS_SIZE: 262144
         FLASH_SIZE: 2097152
@@ -113,6 +151,7 @@ conds:
         MGOS_ROOT_FS_TYPE: SPIFFS
   - when: build_vars.MODEL == "ShellyPlugUS"
     apply:
+      name: shelly-plug-u1
       build_vars:
         FS_SIZE: 262144
         FLASH_SIZE: 2097152
@@ -120,6 +159,7 @@ conds:
         MGOS_ROOT_FS_TYPE: SPIFFS
   - when: build_vars.MODEL == "ShellyHT"
     apply:
+      name: ht-sensor
       build_vars:
         FS_SIZE: 262144
         FLASH_SIZE: 2097152
@@ -127,6 +167,7 @@ conds:
         MGOS_ROOT_FS_TYPE: SPIFFS
   - when: build_vars.MODEL == "ShellyDuo"
     apply:
+      name: bulbduo
       build_vars:
         FS_SIZE: 262144
         FLASH_SIZE: 2097152
@@ -134,6 +175,7 @@ conds:
         MGOS_ROOT_FS_TYPE: SPIFFS
   - when: build_vars.MODEL == "ShellyI3"
     apply:
+      name: ix3
       build_vars:
         FS_SIZE: 262144
         FLASH_SIZE: 2097152
@@ -141,6 +183,7 @@ conds:
         MGOS_ROOT_FS_TYPE: SPIFFS
   - when: build_vars.MODEL == "Shelly1L"
     apply:
+      name: switch1l
       build_vars:
         FS_SIZE: 262144
         FLASH_SIZE: 2097152
@@ -148,6 +191,7 @@ conds:
         MGOS_ROOT_FS_TYPE: SPIFFS
   - when: build_vars.MODEL == "ShellyPlug2"
     apply:
+      name: shelly-plug2
       build_vars:
         FS_SIZE: 262144
         FLASH_SIZE: 4194304
@@ -155,6 +199,7 @@ conds:
         MGOS_ROOT_FS_TYPE: SPIFFS
   - when: build_vars.MODEL == "ShellyUni"
     apply:
+      name: uni
       build_vars:
         FS_SIZE: 262144
         FLASH_SIZE: 2097152
@@ -162,6 +207,7 @@ conds:
         MGOS_ROOT_FS_TYPE: SPIFFS
   - when: build_vars.MODEL == "ShellyDuoRGBW"
     apply:
+      name: color-bulb
       build_vars:
         FS_SIZE: 262144
         FLASH_SIZE: 2097152
