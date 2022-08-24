@@ -48,11 +48,11 @@ time:
 
 switch:
   - platform: gpio
-    neme: Switch 1
+    name: Switch 1
     pin: GPIO4
     id: shelly_relay0
   - platform: gpio
-    neme: Switch 2
+    name: Switch 2
     pin: GPIO15
     id: shelly_relay1
 
