@@ -34,6 +34,33 @@ libs:
   - origin: https://github.com/mongoose-os-libs/ota-http-server # local OTA update via HTTP POST
 
 conds:
+  - when: build_vars.TARGETFW == "tasmota"
+    apply:
+      config_schema:
+        - [
+            "mg2x.url",
+            "s",
+            "https://ota.tasmota.com/tasmota/release/tasmota.bin",
+            { "title": "URL of target firmware" },
+          ]
+  - when: build_vars.TARGETFW == "haa"
+    apply:
+      config_schema:
+        - [
+            "mg2x.url",
+            "s",
+            "https://github.com/RavenSystem/haa/releases/latest/download/fullhaaboot.bin",
+            { "title": "URL of target firmware" },
+          ]
+  - when: build_vars.TARGETFW == "espurna"
+    apply:
+      config_schema:
+        - [
+            "mg2x.url",
+            "s",
+            "https://github.com/xoseperez/espurna/releases/latest/download/espurna-1.14.1-espurna-base-1MB.bin",
+            { "title": "URL of target firmware" },
+          ]
   - when: build_vars.MODEL == "Shelly1"
     apply:
       name: switch1
