@@ -48,6 +48,7 @@ time:
 
 switch:
   - platform: gpio
+    name: Switch
     pin: GPIO4
     id: shelly_relay
 
