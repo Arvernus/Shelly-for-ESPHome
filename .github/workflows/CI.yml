@@ -119,7 +119,7 @@ jobs:
         with:
           mos-yml-path: migration_firmware
           platform: esp8266
-          build-args: --build-var MODEL=${{ matrix.device }}
+          build-args: --build-var MODEL=${{ matrix.device }} --build_var TARGETFW=esphome
         id: mos_build
       - uses: actions/upload-artifact@v2.3.0
         with:
