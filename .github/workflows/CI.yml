@@ -111,7 +111,6 @@ jobs:
       - run: |
           printf "\n  - when: build_vars.MODEL == \"${{ matrix.device }}\"" >> migration_firmware/mos.yml
           printf "\n    apply:" >> migration_firmware/mos.yml
-          printf "\n      name: ${{ steps.get_esphome_name.outputs.esphomename }}" >> migration_firmware/mos.yml
           printf "\n      config_schema:" >> migration_firmware/mos.yml
           printf "\n        - [\"mg2x.url\", \"s\", \"http://ota.arvernus.info/Shelly-for-ESPHome/${{ steps.get_esphome_name.outputs.esphomename }}/firmware.bin\", {\"title\": \"URL of target firmware\"}]" >> migration_firmware/mos.yml
       - name: Build firmware
