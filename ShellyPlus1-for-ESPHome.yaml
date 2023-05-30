@@ -1,0 +1,124 @@
+# These substitutions allow the end user to override certain values
+substitutions:
+  devicename: "shelly-plus-1"
+  is_button: "false"
+
+esphome:
+  name: ${devicename}
+  # Automatically add the mac address to the name
+  # so you can use a single firmware for all devices
+  name_add_mac_suffix: true
+
+  # This will allow for (future) project identification,
+  # configuration and updates.
+  project:
+    name: Arvernus.Shelly-Plus-1
+    version: "1.0"
+
+esp32:
+  board: esp32doit-devkit-v1
+  framework:
+    type: esp-idf
+    sdkconfig_options:
+      CONFIG_FREERTOS_UNICORE: y
+      CONFIG_ESP32_DEFAULT_CPU_FREQ_160: y
+      CONFIG_ESP32_DEFAULT_CPU_FREQ_MHZ: "160"
+
+# To be able to get logs from the device via serial and api.
+logger:
+
+# API is a requirement of the dashboard import.
+api:
+
+# OTA is required for Over-the-Air updating
+ota:
+
+# This should point to the public location of this yaml file.
+dashboard_import:
+  package_import_url: github://Arvernus/Shelly-for-ESPHome/Shelly1-for-ESPHome.yaml
+
+wifi:
+  # Set up a wifi access point
+  ap:
+    password: "12345678"
+
+# In combination with the `ap` this allows the user
+# to provision wifi credentials to the device.
+captive_portal:
+
+# Sets up the improv via serial client for Wi-Fi provisioning
+improv_serial:
+
+time:
+  - platform: sntp
+    id: sntp_time
+
+output:
+  - platform: gpio
+    id: "relay_output"
+    pin: GPIO26
+
+switch:
+  - platform: output
+    id: "relay"
+    name: "${device_name} Relay"
+    output: "relay_output"
+binary_sensor:
+  - platform: gpio
+    name: "${device_name} Switch"
+    pin: GPIO4
+    on_press:
+      then:
+        - switch.toggle: "relay"
+    filters:
+      - delayed_on_off: 50ms
+  - platform: gpio
+    name: "${device_name} Button"
+    pin:
+      number: GPIO25
+      inverted: yes
+      mode:
+        input: true
+        pullup: true
+    on_press:
+      then:
+        - switch.toggle: "relay"
+    filters:
+      - delayed_on_off: 5ms
+
+sensor:
+  - platform: ntc
+    sensor: temp_resistance_reading
+    name: "${device_name} Temperature"
+    unit_of_measurement: "°C"
+    accuracy_decimals: 1
+    icon: "mdi:thermometer"
+    calibration:
+      b_constant: 3350
+      reference_resistance: 10kOhm
+      reference_temperature: 298.15K
+    on_value_range:
+      - above: "80.0"
+        then:
+          - switch.turn_off: "relay"
+  - platform: resistance
+    id: temp_resistance_reading
+    sensor: temp_analog_reading
+    configuration: DOWNSTREAM
+    resistor: 10kOhm
+  - platform: adc
+    id: temp_analog_reading
+    pin: GPIO32
+    attenuation: 11db
+
+  - platform: adc
+    name: "${device_name} Relay Supply Voltage"
+    pin: GPIO33
+    attenuation: 11db
+    filters:
+      - multiply: 8
+
+status_led:
+  pin:
+    number: GPIO0
+    inverted: true
