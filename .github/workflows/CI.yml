@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@v2.4.0
       - id: devices-array
         run: |
-          files=$(ls -m *-for-ESPHome.yaml | sed s/"-for-ESPHome.yaml"//g )
+          files=$(ls -m devices/*.yaml | sed s/".yaml"//g )
           fileslist=$(echo "$files" | jq -Rcn 'inputs | . / ", "')
           echo ::set-output name=devices::$fileslist
 
