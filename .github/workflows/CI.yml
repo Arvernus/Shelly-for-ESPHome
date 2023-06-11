@@ -17,6 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - id: devices-array
+        name: Get devicelist
         run: |
           cd devices/
           files=$(ls -m *.yaml)
