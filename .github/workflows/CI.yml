@@ -119,10 +119,7 @@ jobs:
         with:
           file: devices/${{ matrix.device }}_full.yaml
           esphomename: substitutions.devicename
-          esp32config: esp32
-          esp8266config: esp8266
-      - run: echo ${{ steps.get_esphome_name.outputs.esp32config }}
-      - run: echo ${{ steps.get_esphome_name.outputs.esp8266config }}
+      - run: if grep -wq "esp32:" devices/${{ matrix.device }}_full.yaml; then echo esp32;else if grep -wq "esp8266:" devices/${{ matrix.device }}_full.yaml; then echo esp8266;else echo ""; fi; fi
       - run: |
           printf "conds:" >> migration_firmware/add-mos.yml
           printf "\n  - when: build_vars.MODEL == \"${{ matrix.device }}\"" >> migration_firmware/add-mos.yml
