@@ -112,14 +112,14 @@ jobs:
         id: get_esphome_name
         uses: cumulusds/get-yaml-paths-action@v0.1.1
         with:
-          file: ${{ matrix.device }}-for-ESPHome.yaml
+          file: ${{ matrix.device }}.yaml
           esphomename: substitutions.devicename
       - run: |
           printf "conds:" >> migration_firmware/add-mos.yml
           printf "\n  - when: build_vars.MODEL == \"${{ matrix.device }}\"" >> migration_firmware/add-mos.yml
           printf "\n    apply:" >> migration_firmware/add-mos.yml
           printf "\n      config_schema:" >> migration_firmware/add-mos.yml
-          printf "\n        - [\"mg2x.url\", \"s\", \"http://ota.arvernus.info/Shelly-for-ESPHome/${{ matrix.device }}/firmware.bin\", {\"title\": \"URL of target firmware\"}]" >> migration_firmware/add-mos.yml
+          printf "\n        - [\"mg2x.url\", \"s\", \"https://arvernus.github.io/Shelly-for-ESPHome/${{ matrix.device }}/firmware.bin\", {\"title\": \"URL of target firmware\"}]" >> migration_firmware/add-mos.yml
           echo "$(cat migration_firmware/add-mos.yml)"
           yq ea -i '. as $item ireduce ({}; . *+ $item )' migration_firmware/mos.yml migration_firmware/add-mos.yml
       - name: Build firmware
