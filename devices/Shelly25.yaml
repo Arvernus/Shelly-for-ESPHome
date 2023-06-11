@@ -7,7 +7,6 @@ substitutions:
 esphome:
   platform: ESP8266
   friendly_name: ${devicename_h}
-  name_add_mac_suffix: true
   board: esp01_1m
   name: ${devicename}
   # Automatically add the mac address to the name
