@@ -50,7 +50,7 @@ jobs:
       - run: |
           printf "\n## ${{ matrix.device }}\n" >> output/install_esphome_buttons_from_stock.md
           printf "\`\`\`\n /ota?url=http://ota.arvernus.info/Shelly-for-ESPHome/mg2esphome-${{ matrix.device }}/fw.zip \n\`\`\`" >> output/install_esphome_buttons_from_stock.md
-      - uses: actions/upload-artifact@v2.1.0
+      - uses: actions/upload-artifact@v3
         with:
           name: deploy
           path: output
@@ -70,7 +70,7 @@ jobs:
         id: esphome-build
         with:
           yaml_file: devices/${{ matrix.device }}.yaml
-      - uses: actions/upload-artifact@v2.3.0
+      - uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.device }}
           path: ${{ steps.esphome-build.outputs.name }}
@@ -92,7 +92,7 @@ jobs:
         run: |
           mv output/manifest.json manifest.json
           jq -s '{"name": "${{ matrix.device }} for ESPHome", "version": "${{ needs.build_esphome_firmware.outputs.esphome-version }}", "home_assistant_domain": "esphome", "new_install_skip_erase": false, "builds":.}' manifest.json > output/manifest.json
-      - uses: actions/upload-artifact@v2.3.0
+      - uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.device }}
           path: output
@@ -129,7 +129,7 @@ jobs:
           platform: esp8266
           build-args: --build-var MODEL=${{ matrix.device }} --build-var TARGETFW=esphome
         id: mos_build
-      - uses: actions/upload-artifact@v2.3.0
+      - uses: actions/upload-artifact@v3
         with:
           name: mg2esphome-${{ matrix.device }}
           path: migration_firmware/build/fw.zip
