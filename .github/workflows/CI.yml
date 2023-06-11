@@ -119,7 +119,7 @@ jobs:
           platform=$(if grep -wq "esp32:" devices/${{ matrix.device }}_full.yaml; then echo esp32;else if grep -wq "esp8266:" devices/${{ matrix.device }}_full.yaml; then echo esp8266;else echo ""; fi; fi)
           echo "platform=$platform" >> $GITHUB_OUTPUT
       - run: |
-          printf "platform: ${{ steps.set-platform.outputs.platform }}" >> migration_firmware/add-mos.yml
+          printf "platform: ${{ steps.set-platform.outputs.platform }}\n" >> migration_firmware/add-mos.yml
           printf "conds:" >> migration_firmware/add-mos.yml
           printf "\n  - when: build_vars.MODEL == \"${{ matrix.device }}\"" >> migration_firmware/add-mos.yml
           printf "\n    apply:" >> migration_firmware/add-mos.yml
