@@ -49,7 +49,7 @@ jobs:
           printf "<esp-web-install-button manifest=\"./${{ matrix.device }}/manifest.json\"><button slot=\"activate\">Install ${{ matrix.device }} Firmware</button></esp-web-install-button>" >> output/install_esphome_buttons.md
       - run: |
           printf "\n## ${{ matrix.device }}\n" >> output/install_esphome_buttons_from_stock.md
-          printf "\`\`\`\n /ota?url=http://ota.arvernus.info/Shelly-for-ESPHome/mg2esphome-${{ matrix.device }}/fw.zip \n\`\`\`" >> output/install_esphome_buttons_from_stock.md
+          printf "\`\`\`\n /ota?url=https://arvernus.github.io/Shelly-for-ESPHome/mg2esphome-${{ matrix.device }}/fw.zip \n\`\`\`" >> output/install_esphome_buttons_from_stock.md
       - uses: actions/upload-artifact@v3
         with:
           name: deploy
@@ -119,7 +119,7 @@ jobs:
           printf "\n  - when: build_vars.MODEL == \"${{ matrix.device }}\"" >> migration_firmware/add-mos.yml
           printf "\n    apply:" >> migration_firmware/add-mos.yml
           printf "\n      config_schema:" >> migration_firmware/add-mos.yml
-          printf "\n        - [\"mg2x.url\", \"s\", \"https://arvernus.github.io/Shelly-for-ESPHome/${{ matrix.device }}/firmware.bin\", {\"title\": \"URL of target firmware\"}]" >> migration_firmware/add-mos.yml
+          printf "\n        - [\"mg2x.url\", \"s\", \"http://arvernus.github.io/Shelly-for-ESPHome/${{ matrix.device }}/firmware.bin\", {\"title\": \"URL of target firmware\"}]" >> migration_firmware/add-mos.yml
           echo "$(cat migration_firmware/add-mos.yml)"
           yq ea -i '. as $item ireduce ({}; . *+ $item )' migration_firmware/mos.yml migration_firmware/add-mos.yml
       - name: Build firmware
