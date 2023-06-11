@@ -108,12 +108,21 @@ jobs:
       fail-fast: false
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+      - name: Install ESPHome
+        run: pip install esphome
+      - name: Store YAML
+        run: echo $(esphome -q config devices/${{ matrix.device }}.yaml) >> devices/${{ matrix.device }}_full.yaml
       - name: Get Devicename
         id: get_esphome_name
         uses: cumulusds/get-yaml-paths-action@v1.0.1
         with:
-          file: devices/${{ matrix.device }}.yaml
+          file: devices/${{ matrix.device }}_full.yaml
           esphomename: substitutions.devicename
+          esp32config: esp32
+          esp8266config: esp8266
+      - run: echo ${{ steps.get_esphome_name.outputs.esp32config }}
+      - run: echo ${{ steps.get_esphome_name.outputs.esp8266config }}
       - run: |
           printf "conds:" >> migration_firmware/add-mos.yml
           printf "\n  - when: build_vars.MODEL == \"${{ matrix.device }}\"" >> migration_firmware/add-mos.yml
