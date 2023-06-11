@@ -113,12 +113,6 @@ jobs:
         run: pip install esphome
       - name: Store YAML
         run: esphome -q config devices/${{ matrix.device }}.yaml >> devices/${{ matrix.device }}_full.yaml
-      - name: Get Devicename
-        id: get_esphome_name
-        uses: cumulusds/get-yaml-paths-action@v1.0.1
-        with:
-          file: devices/${{ matrix.device }}_full.yaml
-          esphomename: substitutions.devicename
       - run: if grep -wq "esp32:" devices/${{ matrix.device }}_full.yaml; then echo esp32;else if grep -wq "esp8266:" devices/${{ matrix.device }}_full.yaml; then echo esp8266;else echo ""; fi; fi
       - run: |
           printf "conds:" >> migration_firmware/add-mos.yml
