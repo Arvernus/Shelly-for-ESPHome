@@ -1,10 +1,12 @@
 # These substitutions allow the end user to override certain values
 substitutions:
-  devicename: "shelly-1"
+  devicename: "shelly-25"
+  devicename_h: "Shelly 2.5"
   is_button: "false"
 
 esphome:
   platform: ESP8266
+  friendly_name: ${devicename_h}
   board: esp01_1m
   name: ${devicename}
   # Automatically add the mac address to the name
@@ -14,7 +16,7 @@ esphome:
   # This will allow for (future) project identification,
   # configuration and updates.
   project:
-    name: Arvernus.Shelly-1
+    name: Arvernus.Shelly-25
     version: "1.0"
 
 # To be able to get logs from the device via serial and api.
@@ -28,7 +30,7 @@ ota:
 
 # This should point to the public location of this yaml file.
 dashboard_import:
-  package_import_url: github://Arvernus/Shelly-for-ESPHome/Shelly1-for-ESPHome.yaml
+  package_import_url: github://Arvernus/Shelly-for-ESPHome/Shelly25-for-ESPHome.yaml
 
 wifi:
   # Set up a wifi access point
@@ -49,9 +51,35 @@ time:
 switch:
   - platform: gpio
     pin: GPIO4
-    id: shelly_relay
+    id: shelly_relay0
+  - platform: gpio
+    pin: GPIO15
+    id: shelly_relay1
 
 binary_sensor:
+  - platform: gpio
+    internal: true
+    pin:
+      number: GPIO13
+    # small delay to prevent debouncing
+    filters:
+      - delayed_on_off: 50ms
+    # config for state change of input button
+    on_state:
+      if:
+        condition:
+          lambda: |-
+            return !${is_button};
+        then:
+          switch.toggle: shelly_relay0
+    on_click:
+      if:
+        condition:
+          lambda: |-
+            return ${is_button};
+        then:
+          switch.toggle: shelly_relay0
+    id: button0
   - platform: gpio
     internal: true
     pin:
@@ -66,12 +94,12 @@ binary_sensor:
           lambda: |-
             return !${is_button};
         then:
-          switch.toggle: shelly_relay
+          switch.toggle: shelly_relay1
     on_click:
       if:
         condition:
           lambda: |-
             return ${is_button};
         then:
-          switch.toggle: shelly_relay
-    id: button
+          switch.toggle: shelly_relay1
+    id: button1

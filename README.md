@@ -1,21 +1,23 @@
-# ESPHome Project Template
+# Shelly for ESPHome
 
-This repo serves as a template for creating a new ESPHome project.
+This Project is supposes to provide a simple and intuitive way to flash a Shelly Device with ESPHome. The easiest way to use this tool is to go to the [Installer Page](https://arvernus.github.io/Shelly-for-ESPHome/). There one can choose between direct installation in the browser via cable or via OTA update directly from the stock firmware.
 
-It includes a GitHub workflow that will automatically build the configuration(s) and then deploys a simple 
-website via GitHub pages that utilises [ESP Web Tools](https://esphome.github.io/esp-web-tools/) for users to 
-easily install your project onto their device.
+## Warnings
 
-## Instructions
+The process of flashing a device OTA may fail and leave the device in an unknown status.
 
-1. Use this repo template to [generate](https://github.com/esphome/esphome-project-template/generate) your own repository.
-2. Clone your new repository.
-3. Replace the `project-template-....yaml` files with your own YAML configuration(s).
-4. 
-    a. Update [.github/workflows/publish.yml](.github/workflows/publish.yml) to contain your own YAML config filename(s).
-    b. Update [.github/workflows/ci.yml](.github/workflows/ci.yml) to contain your own YAML config filename(s).
-5. Update [static/_config.yml](static/_config.yml) to change the title, description and basic theme of the generated website.
-6. Add more content to the [static/index.md](static/index.md) file to explain your project.
-    Make sure to leave the installation code tags in place so users get the install button.
-7. Push your changes to the repository and GitHub Actions will automatically build and deploy your project.
-8. Go to the repository setting to enable [Pages](https://help.github.com/en/github/working-with-repository-pages/about-pages).
+## Participate in the Project
+
+There is a [Github-Action](.github/workflows/CI.yml)  that builds firmware's for all `.yaml` at `/`. Additional yaml's for other devices may be added.
+
+All `.yaml` files may be buildable ESPHome config files and at least contain tho following config entry's:
+
+```yaml
+substitutions:
+  devicename: "shelly-1" # The Name of the Device following the rules defined at https://esphome.io/components/esphome.html
+  devicename_h: "Shelly 1" # The Name of the Device in an humanly readable form.
+
+esphome:
+    name_add_mac_suffix: true
+```
+ToDo: APiv2

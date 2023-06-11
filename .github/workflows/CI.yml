@@ -15,12 +15,15 @@ jobs:
     outputs:
       devices: ${{ steps.devices-array.outputs.devices }}
     steps:
-      - uses: actions/checkout@v2.4.0
+      - uses: actions/checkout@v3
       - id: devices-array
+        name: Get devicelist
         run: |
-          files=$(ls -m *-for-ESPHome.yaml | sed s/"-for-ESPHome.yaml"//g )
-          fileslist=$(echo "$files" | jq -Rcn 'inputs | . / ", "')
-          echo ::set-output name=devices::$fileslist
+          cd devices/
+          files=$(ls -m *.yaml)
+          devicesraw=$(echo $files | sed s/".yaml"//g )
+          devicelist=$(echo "$devicesraw" | jq -Rcn 'inputs | . / ", "')
+          echo "devices=$devicelist" >> $GITHUB_OUTPUT
 
   setup_deploy:
     name: Setup Deploy for ${{ matrix.device }}
@@ -31,20 +34,23 @@ jobs:
         device: ${{ fromJSON(needs.setup.outputs.devices) }}
       max-parallel: 1
     steps:
-      - run: |
+      - name: Create Output folder
+        run: |
           mkdir output
-      - uses: actions/download-artifact@v2.1.0
+      - name: Downloade Output if avilable
+        uses: actions/download-artifact@v3
         with:
           name: deploy
           path: output
         continue-on-error: true
-      - run: |
+      - name: Create Web entry
+        run: |
           printf "\n## ${{ matrix.device }}\n" >> output/install_esphome_buttons.md
           printf "<esp-web-install-button manifest=\"./${{ matrix.device }}/manifest.json\"><button slot=\"activate\">Install ${{ matrix.device }} Firmware</button></esp-web-install-button>" >> output/install_esphome_buttons.md
       - run: |
           printf "\n## ${{ matrix.device }}\n" >> output/install_esphome_buttons_from_stock.md
           printf "\`\`\`\n /ota?url=http://ota.arvernus.info/Shelly-for-ESPHome/mg2esphome-${{ matrix.device }}/fw.zip \n\`\`\`" >> output/install_esphome_buttons_from_stock.md
-      - uses: actions/upload-artifact@v2.1.0
+      - uses: actions/upload-artifact@v3
         with:
           name: deploy
           path: output
@@ -59,12 +65,12 @@ jobs:
     outputs:
       esphome-version: ${{ steps.esphome-build.outputs.esphome-version }}
     steps:
-      - uses: actions/checkout@v2.4.0
-      - uses: esphome/build-action@v1.1.0
+      - uses: actions/checkout@v3
+      - uses: esphome/build-action@v1.8.0
         id: esphome-build
         with:
-          yaml_file: ${{ matrix.device }}-for-ESPHome.yaml
-      - uses: actions/upload-artifact@v2.3.0
+          yaml_file: devices/${{ matrix.device }}.yaml
+      - uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.device }}
           path: ${{ steps.esphome-build.outputs.name }}
@@ -78,7 +84,7 @@ jobs:
       matrix:
         device: ${{ fromJSON(needs.setup.outputs.devices) }}
     steps:
-      - uses: actions/download-artifact@v2.1.0
+      - uses: actions/download-artifact@v3
         with:
           name: ${{ matrix.device }}
           path: output
@@ -86,7 +92,7 @@ jobs:
         run: |
           mv output/manifest.json manifest.json
           jq -s '{"name": "${{ matrix.device }} for ESPHome", "version": "${{ needs.build_esphome_firmware.outputs.esphome-version }}", "home_assistant_domain": "esphome", "new_install_skip_erase": false, "builds":.}' manifest.json > output/manifest.json
-      - uses: actions/upload-artifact@v2.3.0
+      - uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.device }}
           path: output
@@ -101,19 +107,19 @@ jobs:
         device: ${{ fromJSON(needs.setup.outputs.devices) }}
       fail-fast: false
     steps:
-      - uses: actions/checkout@v2.4.0
+      - uses: actions/checkout@v3
       - name: Get Devicename
         id: get_esphome_name
-        uses: cumulusds/get-yaml-paths-action@v0.1.1
+        uses: cumulusds/get-yaml-paths-action@v1.0.1
         with:
-          file: ${{ matrix.device }}-for-ESPHome.yaml
+          file: devices/${{ matrix.device }}.yaml
           esphomename: substitutions.devicename
       - run: |
           printf "conds:" >> migration_firmware/add-mos.yml
           printf "\n  - when: build_vars.MODEL == \"${{ matrix.device }}\"" >> migration_firmware/add-mos.yml
           printf "\n    apply:" >> migration_firmware/add-mos.yml
           printf "\n      config_schema:" >> migration_firmware/add-mos.yml
-          printf "\n        - [\"mg2x.url\", \"s\", \"http://ota.arvernus.info/Shelly-for-ESPHome/${{ matrix.device }}/firmware.bin\", {\"title\": \"URL of target firmware\"}]" >> migration_firmware/add-mos.yml
+          printf "\n        - [\"mg2x.url\", \"s\", \"https://arvernus.github.io/Shelly-for-ESPHome/${{ matrix.device }}/firmware.bin\", {\"title\": \"URL of target firmware\"}]" >> migration_firmware/add-mos.yml
           echo "$(cat migration_firmware/add-mos.yml)"
           yq ea -i '. as $item ireduce ({}; . *+ $item )' migration_firmware/mos.yml migration_firmware/add-mos.yml
       - name: Build firmware
@@ -123,7 +129,7 @@ jobs:
           platform: esp8266
           build-args: --build-var MODEL=${{ matrix.device }} --build-var TARGETFW=esphome
         id: mos_build
-      - uses: actions/upload-artifact@v2.3.0
+      - uses: actions/upload-artifact@v3
         with:
           name: mg2esphome-${{ matrix.device }}
           path: migration_firmware/build/fw.zip
@@ -133,7 +139,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build_esphome_firmware, build_migration_firmware, complet_manifest]
     steps:
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
       - run: |
           echo github.event.action == '${{ github.event.action }}'
           echo github.event.pull_request.merged == '${{ github.event.pull_request.merged }}'
@@ -145,8 +151,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: [test, setup_deploy]
     steps:
-      - uses: actions/checkout@v2.4.0
-      - uses: actions/download-artifact@v2.1.0
+      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v3
         with:
           path: output
       - run: |
