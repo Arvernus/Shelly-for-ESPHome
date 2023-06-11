@@ -112,7 +112,7 @@ jobs:
         id: get_esphome_name
         uses: cumulusds/get-yaml-paths-action@v0.1.1
         with:
-          file: ${{ matrix.device }}.yaml
+          file: devices/${{ matrix.device }}.yaml
           esphomename: substitutions.devicename
       - run: |
           printf "conds:" >> migration_firmware/add-mos.yml
