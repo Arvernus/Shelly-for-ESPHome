@@ -1,6 +1,7 @@
 # These substitutions allow the end user to override certain values
 substitutions:
   devicename: "shelly-1"
+  devicename_h: "shelly-1"
   is_button: "false"
 
 esphome:
