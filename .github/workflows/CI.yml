@@ -112,7 +112,7 @@ jobs:
       - name: Install ESPHome
         run: pip install esphome
       - name: Store YAML
-        run: echo $(esphome -q config devices/${{ matrix.device }}.yaml) >> devices/${{ matrix.device }}_full.yaml
+        run: esphome -q config devices/${{ matrix.device }}.yaml >> devices/${{ matrix.device }}_full.yaml
       - name: Get Devicename
         id: get_esphome_name
         uses: cumulusds/get-yaml-paths-action@v1.0.1
