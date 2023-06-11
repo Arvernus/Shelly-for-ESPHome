@@ -1,14 +1,14 @@
 {
-  "name": "Shelly25 for ESPHome",
+  "name": "ShellyPlus1 for ESPHome",
   "version": "",
   "home_assistant_domain": "esphome",
   "new_install_skip_erase": false,
   "builds": [
     {
-      "chipFamily": "ESP8266",
+      "chipFamily": "ESP32",
       "parts": [
         {
-          "path": "shelly-25-esp8266/shelly-25-esp8266.bin",
+          "path": "shelly-p-1-esp32/shelly-p-1-esp32.bin",
           "offset": 0
         }
       ]
