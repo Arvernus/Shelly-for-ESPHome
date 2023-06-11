@@ -113,7 +113,11 @@ jobs:
         run: pip install esphome
       - name: Store YAML
         run: esphome -q config devices/${{ matrix.device }}.yaml >> devices/${{ matrix.device }}_full.yaml
-      - run: if grep -wq "esp32:" devices/${{ matrix.device }}_full.yaml; then echo esp32;else if grep -wq "esp8266:" devices/${{ matrix.device }}_full.yaml; then echo esp8266;else echo ""; fi; fi
+      - name: Set Platform
+        id: set-platform
+        run: |
+          platform=$(if grep -wq "esp32:" devices/${{ matrix.device }}_full.yaml; then echo esp32;else if grep -wq "esp8266:" devices/${{ matrix.device }}_full.yaml; then echo esp8266;else echo ""; fi; fi)
+          echo "platform=$platform" >> $GITHUB_OUTPUT
       - run: |
           printf "conds:" >> migration_firmware/add-mos.yml
           printf "\n  - when: build_vars.MODEL == \"${{ matrix.device }}\"" >> migration_firmware/add-mos.yml
@@ -126,7 +130,7 @@ jobs:
         uses: yaourdt/mongoose-os-action@v2.0.2
         with:
           mos-yml-path: migration_firmware
-          platform: esp8266
+          platform: ${{ steps.set-platform.outputs.platform }}
           build-args: --build-var MODEL=${{ matrix.device }} --build-var TARGETFW=esphome
         id: mos_build
       - uses: actions/upload-artifact@v3
