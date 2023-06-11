@@ -20,7 +20,7 @@ jobs:
         run: |
           files=$(ls -m devices/*.yaml | sed s/".yaml"//g )
           fileslist=$(echo "$files" | jq -Rcn 'inputs | . / ", "')
-          echo ::set-output name=devices::$fileslist
+          echo "devices=$fileslist" >> $GITHUB_OUTPUT
 
   setup_deploy:
     name: Setup Deploy for ${{ matrix.device }}
