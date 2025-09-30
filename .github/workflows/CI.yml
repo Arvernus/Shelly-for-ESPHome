@@ -98,6 +98,7 @@ jobs:
           name: ${{ matrix.device }}
           path: output
           if-no-files-found: error
+          overwrite: true
 
   build_migration_firmware:
     name: Build Migration Firmware for ${{ matrix.device }}
