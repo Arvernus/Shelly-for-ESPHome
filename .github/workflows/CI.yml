@@ -70,7 +70,7 @@ jobs:
       - uses: esphome/build-action@v6
         id: esphome-build
         with:
-          yaml_file: devices/${{ matrix.device }}.yaml
+          yaml-file: devices/${{ matrix.device }}.yaml
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.device }}
