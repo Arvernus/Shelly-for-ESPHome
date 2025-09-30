@@ -5,9 +5,7 @@ substitutions:
   is_button: "false"
 
 esphome:
-  platform: ESP8266
   friendly_name: ${devicename_h}
-  board: esp01_1m
   name: ${devicename}
   # Automatically add the mac address to the name
   # so you can use a single firmware for all devices
@@ -17,8 +15,10 @@ esphome:
   # configuration and updates.
   project:
     name: Arvernus.Shelly-25
-    version: "1.0"
+    version: "1.0.0"
 
+esp8266:
+  board: esp01_1m
 # To be able to get logs from the device via serial and api.
 logger:
 
@@ -27,6 +27,7 @@ api:
 
 # OTA is required for Over-the-Air updating
 ota:
+  platform: esphome
 
 # This should point to the public location of this yaml file.
 dashboard_import:
