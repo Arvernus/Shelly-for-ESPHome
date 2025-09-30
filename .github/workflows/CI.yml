@@ -54,6 +54,7 @@ jobs:
         with:
           name: deploy
           path: output
+          overwrite: true
 
   build_esphome_firmware:
     name: Build ESPHome binary for ${{ matrix.device }}
