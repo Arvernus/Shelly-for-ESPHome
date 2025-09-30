@@ -6,9 +6,13 @@
   "builds": [
     {
       "chipFamily": "ESP32",
+      "ota": {
+        "path": "shelly-p-1-esp32.ota.bin",
+        "md5": "470786fc4fb7eb9e30ddce7194397945"
+      },
       "parts": [
         {
-          "path": "shelly-p-1-esp32/shelly-p-1-esp32.bin",
+          "path": "shelly-p-1-esp32.factory.bin",
           "offset": 0
         }
       ]

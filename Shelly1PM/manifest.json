@@ -1,5 +1,5 @@
 {
-  "name": "Shelly1 for ESPHome",
+  "name": "Shelly1PM for ESPHome",
   "version": "",
   "home_assistant_domain": "esphome",
   "new_install_skip_erase": false,
@@ -7,12 +7,12 @@
     {
       "chipFamily": "ESP8266",
       "ota": {
-        "path": "shelly-1-esp8266.ota.bin",
-        "md5": "626f35720610eb38c8ee934f04d12e47"
+        "path": "shelly-1-pm-esp8266.ota.bin",
+        "md5": "5176d19d96d872ac065e83ad5d0c5612"
       },
       "parts": [
         {
-          "path": "shelly-1-esp8266.factory.bin",
+          "path": "shelly-1-pm-esp8266.factory.bin",
           "offset": 0
         }
       ]

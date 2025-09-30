@@ -6,9 +6,13 @@
   "builds": [
     {
       "chipFamily": "ESP8266",
+      "ota": {
+        "path": "shelly-25-esp8266.ota.bin",
+        "md5": "d08e74be65d209b605baa4438264510d"
+      },
       "parts": [
         {
-          "path": "shelly-25-esp8266/shelly-25-esp8266.bin",
+          "path": "shelly-25-esp8266.factory.bin",
           "offset": 0
         }
       ]
