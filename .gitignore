@@ -9,3 +9,4 @@ secrets.yaml
 devices/secrets.yaml
 output/
 devices/.gitignore
+migration_firmware/build
